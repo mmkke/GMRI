@@ -1,3 +1,7 @@
 # project-spring24
 
-[Instructions](instructions.md)
+**Project:** GMRI  
+**Team:** 
+* Ned Hallahan (NedHallahan)
+* Josh Nougaret (Jnourgaret)
+* Michael Massone (mmkke) - Team Lead
