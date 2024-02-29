@@ -3,5 +3,5 @@
 **Project:** GMRI  
 **Team:** 
 * Ned Hallahan (NedHallahan)
-* Josh Nougaret (Jnourgaret)
+* Josh Nougaret (jnougaret)
 * Michael Massone (mmkke) - Team Lead
