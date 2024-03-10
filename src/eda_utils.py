@@ -31,6 +31,9 @@ def set_params():
     # Set the default style to use
     plt.style.use('ggplot')
 
+    # Tick label non scientific
+    plt.rcParams['axes.formatter.useoffset'] = False
+
     # Set the default savefig format
     plt.rcParams['savefig.format'] = 'png'
 
@@ -70,21 +73,29 @@ def preprocess_data(df):
     # set index to dt col
     df_dt_idx = df.set_index('YYYY/MM', inplace=False)
 
-    # group by dt, fishgroup, and country and aggregate, then reset index
+    df_dt_idx['TotalSoldAtPrice'] = df_dt_idx['AmountSold_by_Kilo'] * df_dt_idx['AvgPrice_per_Kilo']
+
+    #group by dt, fishgroup, and country and aggregate, then reset index
     df_agg = df_dt_idx.groupby(['YYYY/MM', 'FishGroup', 'Country']).agg(
         AmountSold_by_Kilo=('AmountSold_by_Kilo', 'sum'),
-        AvgPrice_per_Kilo=('AvgPrice_per_Kilo', lambda x: (x * df_dt_idx.loc[x.index, 'AmountSold_by_Kilo']).sum() / x.sum())
+        TotalSoldAtPrice=('TotalSoldAtPrice', 'sum')
     ).reset_index()
 
-    # check that prices were averaged correctly
-    df_grouped_fish = df.groupby('FishGroup')[['AvgPrice_per_Kilo', 'AmountSold_by_Kilo']].mean()
-    df_agg_grouped_fish = df_agg.groupby('FishGroup')[['AvgPrice_per_Kilo', 'AmountSold_by_Kilo']].mean()
-    assert(df_agg_grouped_fish['AvgPrice_per_Kilo'].values.all() == df_grouped_fish['AvgPrice_per_Kilo'].values.all())
+    # Calculate the weighted average price per kilo for each group
+    df_agg['AvgPrice_per_Kilo'] = df_agg['TotalSoldAtPrice'] / df_agg['AmountSold_by_Kilo']
+
+    # Drop the 'TotalSoldAtPrice' column if you no longer need it
+    df_agg.drop('TotalSoldAtPrice', axis=1, inplace=True)
 
 
     # add column for imported vs domestic
 
     df_agg['Imported'] = np.where(df_agg['Country'] != 'USA', 'Yes', 'No')
+
+    # drop outliers
+
+    df_agg = df_agg[df_agg['AvgPrice_per_Kilo'] <= 40]
+
 
     return df_agg
 
@@ -97,11 +108,16 @@ def price_distribution_boxplots(df):
     axs[0].set_xlabel('Fish Species')
     axs[0].set_ylabel('Average Price')
     axs[0].set_title('Distribution of Prices per Species')
+    axs[0].ticklabel_format(style='plain', axis='y')
+
 
     sns.boxplot(data=df, x='FishGroup', y='AvgPrice_per_Kilo', hue='Imported', dodge=True, ax=axs[1])
     axs[1].set_xlabel('Fish Species')
     axs[1].set_ylabel('Average Price')
     axs[1].set_title('Distribution of Prices per Species')
+    axs[1].ticklabel_format(style='plain', axis='y')
+
+
 
     plt.tight_layout()
     plt.savefig('figs/price_distribution_boxplots.png', bbox_inches='tight')
@@ -113,14 +129,19 @@ def amnt_vs_price_scatterplots(df):
     fig, ax = plt.subplots(1, 2, figsize=(18,9))
 
     sns.scatterplot(ax=ax[0], data=df, x='AmountSold_by_Kilo', y='AvgPrice_per_Kilo', hue='Imported')
-    ax[0].set_xlabel('Amount Sold (kg)')
+    ax[0].set_xlabel(r'Amount Sold in kg ($\log_{10}$)')
+    ax[0].set_xscale('log')
     ax[0].set_ylabel('Price')
     ax[0].set_title('Amount Sold vs Price, origin')
+    #ax[0].ticklabel_format(style='plain', axis='both')
+
 
     sns.scatterplot(ax=ax[1], data=df, x='AmountSold_by_Kilo', y='AvgPrice_per_Kilo', hue='FishGroup', alpha=0.8)
-    ax[0].set_xlabel('Amount Sold (kg)')
-    ax[0].set_ylabel('Price')
-    ax[0].set_title('Amount Sold vs Price, species')
+    ax[1].set_xlabel(r'Amount Sold in kg ($\log_{10}$)')
+    ax[1].set_xscale('log')
+    ax[1].set_ylabel('Price')
+    ax[1].set_title('Amount Sold vs Price, species')
+    #ax[1].ticklabel_format(style='plain', axis='both')
 
 
     plt.tight_layout()
@@ -142,6 +163,8 @@ def amnt_sold_by_species_barplots(df):
     axs[0].set_ylabel('Amount Sold (kg)')
     axs[0].set_title('Total Amount Sold, by species')
     axs[0].tick_params(axis='x', rotation=45)
+    axs[0].ticklabel_format(style='plain', axis='y')
+
 
     # plot dist per year
     sns.barplot(data=df, x='Year', y='AmountSold_by_Kilo', hue='FishGroup', ax=axs[1])
@@ -149,6 +172,8 @@ def amnt_sold_by_species_barplots(df):
     axs[1].set_ylabel('Amount Sold (kg)')
     axs[1].set_title('Total Amount Sold, by species')
     axs[1].tick_params(axis='x', rotation=45)
+    axs[1].ticklabel_format(style='plain', axis='y')
+
 
     plt.tight_layout()
     plt.savefig('figs/amnt_sold_by_species_barplot.png', bbox_inches='tight')
@@ -179,11 +204,14 @@ def amnt_sold_over_time_by_species_lineplots(df):
         ax[idx,0].set_xlabel('Time')
         ax[idx,0].set_ylabel('Amount Sold (kg)')
         ax[idx,0].set_title(f'{fish} Sold over Time, by species')
+        ax[idx,0].ticklabel_format(style='plain', axis='y')
 
         sns.lineplot(ax = ax[idx,1], data=df[df['FishGroup'] == fish], x=df['YYYY/MM'].apply(lambda x: x.to_timestamp()), y='AmountSold_by_Kilo', hue='Imported')
         ax[idx,1].set_xlabel('Time')
         ax[idx,1].set_ylabel('Amount Sold (kg)')
         ax[idx,1].set_title(f'{fish} Sold over Time, by species')
+        ax[idx,1].ticklabel_format(style='plain', axis='y')
+
 
     plt.tight_layout()
     plt.savefig('figs/amnt_sold_over_time_by_species_lineplots.png', bbox_inches='tight')
@@ -199,16 +227,19 @@ def amnt_sold_over_time_by_origin_lineplots(df):
     axs[0].set_xlabel('Time')
     axs[0].set_ylabel('Amount Sold (kg)')
     axs[0].set_title('Fish Sold over Time, by origin')
+    axs[0].ticklabel_format(style='plain', axis='y')
 
     sns.lineplot(data=df[df['FishGroup'] == 'Cod'], x=df['YYYY/MM'].apply(lambda x: x.to_timestamp()), y='AmountSold_by_Kilo', hue='Country', ax=axs[1])
     axs[1].set_xlabel('Time')
     axs[1].set_ylabel('Amount Sold (kg)')
     axs[1].set_title('Cod Sold over Time, by origin')
+    axs[2].ticklabel_format(style='plain', axis='y')
 
     sns.lineplot(data=df[df['FishGroup'] == 'Hake'], x=df['YYYY/MM'].apply(lambda x: x.to_timestamp()), y='AmountSold_by_Kilo', hue='Country', ax=axs[2])
     axs[2].set_xlabel('Time')
     axs[2].set_ylabel('Amount Sold (kg)')
     axs[2].set_title('Hake Sold over Time, by origin')
+    axs[2].ticklabel_format(style='plain', axis='y')
 
     plt.tight_layout()
     plt.savefig('figs/amnt_sold_over_time_by_origin_lineplots.png', bbox_inches='tight')
