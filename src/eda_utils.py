@@ -93,7 +93,8 @@ def preprocess_data(df):
     df_agg['Imported'] = np.where(df_agg['Country'] != 'USA', 'Yes', 'No')
 
     # drop outliers
-
+    print("OUTLIERS:")
+    print(df_agg[df_agg['AvgPrice_per_Kilo'] > 40])
     df_agg = df_agg[df_agg['AvgPrice_per_Kilo'] <= 40]
 
 
@@ -167,7 +168,8 @@ def amnt_sold_by_species_barplots(df):
 
 
     # plot dist per year
-    sns.barplot(data=df, x='Year', y='AmountSold_by_Kilo', hue='FishGroup', ax=axs[1])
+    sns.barplot(data=df, x='Year', y='AmountSold_by_Kilo', hue='FishGroup', ax=axs[1], 
+                dodge=True, estimator='sum', errorbar=None)
     axs[1].set_xlabel('Year')
     axs[1].set_ylabel('Amount Sold (kg)')
     axs[1].set_title('Total Amount Sold, by species')

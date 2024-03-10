@@ -26,7 +26,7 @@ def get_noaa_data(api_key='klHRkURJrqCrXMZEtjPoSWwckiYazQFS', url='https://apps-
     # no specific query given as arg, proceed with default query
     if query == None:
         query = '''{
-            "year":{"$gt": 2006},
+            "year":{"$gt": 2004},
             "name":{"$like":"%GROUNDFISH%"}, 
             "custom_district_name":{"$like":"%PORTLAND%"}, 
             "continent":{"$like":"%EU%"}
@@ -57,7 +57,7 @@ def get_noaa_data(api_key='klHRkURJrqCrXMZEtjPoSWwckiYazQFS', url='https://apps-
     df['date'] = pd.to_datetime(df['year'].astype(str) + '-' + df['month'].astype(str), format='%Y-%m')
 
     # save to csv and print filepath
-    filepath = "data/noaa_2006-2024.csv"
+    filepath = "data/noaa_2004-2024.csv"
     df.to_csv(filepath, index=False)
     print(f'Data saved to: {filepath}')
 
@@ -196,7 +196,7 @@ def merge_data():
     # Concatenate the dataframes
     combined_df = pd.concat([local_df, imports_df], ignore_index=True)  
 
-    filepath = "data/combined_data_2006-2024.csv"
+    filepath = "data/combined_data_2004-2024.csv"
     combined_df.to_csv(filepath, index=False) 
     print(f'Combined data saved at: {filepath}')
 
