@@ -42,15 +42,15 @@ Returned 5761 records.
 Attributes:
 * year - Year imported.
 * month - Month imported.
-* hts_number - 
+* hts_number - Harmonized Tariff Schedule number: https://hts.usitc.gov/reststop/file?release=currentRelease&filename=Chapter%203
 * name - Species name.
 * fus_group_code1 - Fisheries of the United State Group Code 1.
 * fus_group_code2 - Fisheries of the United State Group Code 2.
 * fus_group1 - Fisheries of the United State Group 1.
 * fus_group2 - Fisheries of the United State Group 2.
 * cntry_code - Country code.
-* cntry_name - COuntry name.
-* continent - COnitnent of origin. 
+* cntry_name - Country name.
+* continent - Continent of origin. 
 * fao - Food and Agriculture Orgnization
 * custom_district_code - US Customs District Code. 
 * custom_district_name - US Customs District Name. 
@@ -71,6 +71,22 @@ Attributes:
 Records of locally caught fish were obtained throught the Portland Fish Exchange's Price and Landing Tool.
 
 https://www.pfex.org/price-landing-tool/
+
+All fish species from 01/2004 - 01/2024 
+
+Returned 8051 records.
+
+Attributes:
+* FishCode (str) - Four letter fish identifying code.
+* FishDesc (str) - Description of fish product.
+* Consigned (str) - NaN
+* Sold (str) - Amount sold in lbs. 
+* LowPrice (str) - Min price per pound.
+* AvgPrice (str) - Mean price per pound.
+* HighPrice (str) - Max price per pound.
+* MonthNum (str) - Month Sold
+* YearNum (str) - Year Sold
+
 
 
 # Data Processing:
@@ -124,7 +140,38 @@ Lastly, columns where renamed in preparation for merge with PFEX Data:
 
 ### PFEX Data
 
+First step was two identity, filter, and aggregate the fish specie sincluded in the data. The raw data contained 140 unqiue FIshCodes and 214 unique FishDesc.
 
+The data was filtered by FishDesc using the following keywards:
+
+['cod', 'haddock', 'pollock', 'flounder', 'hake', 'redfish', 'halibut', 'yellowtail']
+
+This reduced the data down to 4046 records. The records were then aggregated using the FishCodes to map a new variable, FishGroup. 
+
+```python
+fish_group_mapping = {
+    'C': 'Cod',
+    'FA': 'Halibut',
+    'FY': 'Yellowtail',
+    'HD': 'Haddock',
+    'HW': 'Hake',
+    'PA': 'Pollock',
+    'PO': 'Redfish',
+    'Y': 'Yellowtail'
+}
+```
+This aggregated and filtered data was then exported to a new csv: data/pfex_2004-2024_processed.csv
+
+
+Lastly, the column 'Sold' was converted to Kilos and the name was changed to AmntSold_by_Kilo. Then the AvgPrice (per pound) was converted ot AvgPrice_per_Kilo.
+
+```python
+    # Convert 'Sold' from pounds to kilos
+    local_df['AmountSold_by_Kilo'] = local_df['Sold'] / 2.20462
+
+    # Convert AvgPrice from $/lb to $/kilo
+    local_df['AvgPrice_per_Kilo'] = local_df['AvgPrice'] * 2.20462
+```
 
 ### Merged Data
 
@@ -170,24 +217,39 @@ This removed the following records:
 
 # EDA:
 
-### Amount Sold by SPecies
+### Amount Sold by Species
 
 <img src="figs/amnt_sold_by_species_barplot.png" width="800">
+
+A much larger amount of imported fish has been sold in Portland, with the exception of Pollock. 
+
+As seen throughout the data, there is a major increase in cod and haddock imports starting in 2013. More invetigation is needed to determine if this is a real trend or some artifact of the data collection or processing.
 
 ### Price
 
 <img src="figs/price_distribution_boxplots.png" width="800">
 
+The mean price is generally higher for imported fish. Will price per kg generally ranges between 1 and 10 USD. Imported cod is more likely to command the highest prices. 
+
 <img src="figs/amnt_vs_price_scatterplots.png" width="800">
+
+When plotting the price vs amount sold for all species there is potentially some clustering by origin and by species. 
 
 
 ### Amount Sold over Time:
+
 
 <img src="figs/amnt_sold_over_time_lineplot.png" width="800">
 
 
 <img src="figs/amnt_sold_over_time_by_species_lineplots.png" width="800">
 
+
+As noted above, there is a very large increase in imported Cod and Hake around 2013. Is this an error in data retrieval/processing, or does it represent a real trend? Can we confirm with outside sources. Discussion with the stakeholder may be needed to understand this aspect of the data.
+
+Looking at the NOAA report for 2013, we can see that the tonnage of of imported Cod increased from 37,036 metric tons the previosu year to 45321 metric tons. However, this data is for all Cod, imported in all customs districts from any country. 
+
+https://www.st.nmfs.noaa.gov/Assets/commercial/trade/Trade2013.pdf
 
 <img src="figs/amnt_sold_over_time_by_origin_lineplots.png" width="800">
 

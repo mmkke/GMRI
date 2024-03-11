@@ -1,0 +1,15 @@
+name: GMRI_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python
+  - make
+  - git
+  - seaborn
+  - matplotlib
+  - pandas
+  - numpy
+  - jupyter
+  - scikit-learn
+  - statsmodels
