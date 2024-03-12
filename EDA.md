@@ -298,7 +298,7 @@ Command to run eda and create and populate figures for for EDA.md
 * Note Arial Font may not be available on some systems and could throw warning
 
 ### make clean
-Command to clean Data
+Command to clean Data and Figs folder
 
 
 # Questions/Next Steps:
