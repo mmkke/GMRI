@@ -13,7 +13,4 @@ __pycache__/
 
 
 # Ignore all files in the data directory
-data/*
-
-# But include this specific file
-!data/pfex_2004-2024.csv
+data/

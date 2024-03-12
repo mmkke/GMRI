@@ -41,4 +41,5 @@ run_eda: $(SRC_DIR) $(FIGS_DIR) $(DATA_DIR) data/combined_data_2006-2024.csv
 
 clean:
 	rm -rf data/*
+	rm -rf figs/*
 
