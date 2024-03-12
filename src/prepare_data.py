@@ -16,6 +16,10 @@ def main():
 
     print(df.info(10))
 
+    getInflationData()
+
+    adjustForInflation()
+
 
 if __name__ == "__main__":
 

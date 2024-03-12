@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import requests
-
+import json
 
 
 def get_noaa_data(api_key='klHRkURJrqCrXMZEtjPoSWwckiYazQFS', url='https://apps-st.fisheries.noaa.gov/ods/foss/trade_data/', query=None, filepath='data/noaa_2006-2024.csv'):
@@ -201,3 +201,85 @@ def merge_data():
     print(f'Combined data saved at: {filepath}')
 
     return combined_df
+
+
+
+
+def inflationDataApiCall(startYear, EndYear):
+    #adapted from https://www.bls.gov/developers/api_python.htm
+
+    
+    headers = {'Content-type': 'application/json'}
+    data = json.dumps({"seriesid": ['CUUR0000SA0'],"startyear":str(startYear), "endyear":str(EndYear)})
+    p = requests.post('https://api.bls.gov/publicAPI/v2/timeseries/data/', data=data, headers=headers)
+    json_data = json.loads(p.text)
+
+    cpiData = pd.DataFrame(json_data['Results']['series'][0]['data'])
+    cpiData['period'] = cpiData['period'].str.replace(r'^M0|^M', '', regex=True)
+
+    return cpiData[["year","period","value"]]
+
+def getInflationData():
+    #get data for 10 year periods
+
+    #hardcoded years to what we're working with and when data is available
+    #only seems to be able to call a decade at a time using their limited api
+    cpi1= inflationDataApiCall(2004,2014)
+    cpi2 =  inflationDataApiCall(2014,2024)
+
+    #concat data
+    cpiData= pd.concat([cpi1,cpi2], ignore_index=True)
+    #sort by year and period
+    cpiData = cpiData.sort_values(by=['year', 'period'])
+
+    #changed to nums to allow math operations
+    cpiData['value'] = cpiData['value'].astype(float)
+    cpiData['year'] = cpiData['year'].astype(int)
+    cpiData['period'] = cpiData['period'].astype(int)
+
+    
+    baseVal = cpiData[cpiData["year"] == cpiData['year'].max()]
+    baseVal = baseVal[baseVal["period"] == baseVal['period'].max()]['value']
+
+    cpiData['scale'] =  baseVal.iloc[0] / cpiData['value'] 
+    cpiData =cpiData.sort_values(by=['year', 'period'])
+    
+    
+
+    '''
+    calculate multiplier for inflation
+    Checked math using
+    https://data.bls.gov/cgi-bin/cpicalc.pl?cost1=1.65&year1=202312&year2=200401
+    '''
+    baseVal = cpiData[cpiData["year"] == cpiData['year'].max()]
+    baseVal = baseVal[baseVal["period"] == baseVal['period'].max()]['value']
+    cpiData['scale'] =  baseVal.iloc[0] / cpiData['value'] 
+
+    filepath = 'data/BLS_CPI_inflationData_2004_2024.csv'
+    cpiData.to_csv(filepath, index=False)
+    print(f'Inflation Data saved at: {filepath}')
+
+    return cpiData
+
+getInflationData()
+
+def adjustForInflation(filePath, columnToAdjust, monthCol, yearCol):
+    inflationData = pd.read_csv('data/BLS_CPI_inflationData_2004_2024.csv')
+    df = pd.read_csv(filePath)
+    print(inflationData)
+   
+
+    df_inflation = (pd.merge(df, inflationData[['scale', 'year', 'period']], left_on=[yearCol, monthCol], right_on=['year', 'period'], how='left')).drop(columns=["period", "year"])
+    df_inflation = df_inflation.dropna(subset=['scale'])
+    df_inflation['inflationAdjusted_'+columnToAdjust] = df_inflation['scale'] * df_inflation[columnToAdjust]
+
+    df_inflation = df_inflation.sort_values(by=[yearCol, monthCol])
+    df_inflation=df_inflation.drop(columns=['scale'])
+
+    filepath = "data/inflation_adjusted_combined_data_2004-2024.csv"
+    df_inflation.to_csv(filepath, index=False) 
+    print(f'Combined Inflation adjusted data saved at: {filepath}')
+
+    return df_inflation.sort_values(by=[yearCol, monthCol])
+
+print(adjustForInflation("data/combined_data_2004-2024.csv", 'AvgPrice_per_Kilo', 'MonthNum', 'YearNum'))
