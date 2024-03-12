@@ -279,6 +279,11 @@ Looking at the NOAA report for 2013, we can see that the tonnage of of imported 
 
 https://www.st.nmfs.noaa.gov/Assets/commercial/trade/Trade2013.pdf
 
+Additionally, the NOAA FIsheries GUI: confirms this increase suggesting it's not an error in data retrieval. 
+
+https://www.fisheries.noaa.gov/foss/f?p=215:2:16678495974590:::::
+
+
 <img src="figs/amnt_sold_over_time_by_origin_lineplots.png" width="800">
 
 
