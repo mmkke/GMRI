@@ -264,5 +264,22 @@ def getInflationData():
     return cpiData
 
 
+def getPortFishex():
+    '''
+    Function to get and save Portland Fish Exchange data
+    disclaimer Portland Fish Exchange has no public facing API. However they have no disclaimers about scraping on their site and this is
+    publically available data.
+
+    I got this link by observing what requests were made when I downloaded a report from the site.
+
+    Because this is unofficial I"m putting it in a try except block and not removing the df from the data folder with clean
+
+    Please advise
+    '''
+    
+    pfex_2004_2024 = pd.read_csv('https://reports.pfex.org/customreport_csv.asp?submitted=true&startdate=1%2F1%2F2004&enddate=1%2F1%2F2024')
+    pfex_2004_2024.to_csv('data/pfex_2004-2024.csv',index=False)
+   
+    
 
 

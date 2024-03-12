@@ -7,8 +7,10 @@ from data_utils import *
 
 
 def main():
-
+    getPortFishex()
+    
     get_noaa_data()
+    
 
     create_fishgroup_col()
 

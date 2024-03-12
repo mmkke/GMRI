@@ -26,7 +26,7 @@ setup_dir:
 	@echo "Directories created: $(SRC_DIR) $(FIGS_DIR)"
 
 # retrievs data and preps for eda
-get_data: $(SRC_DIR) $(DATA_DIR) data/pfex_2004-2024.csv
+get_data: $(SRC_DIR) $(DATA_DIR) 
 	@echo "Running file: src/prepare_data.py"
 	python -B src/prepare_data.py
 	@echo "Complete."
@@ -40,5 +40,5 @@ run_eda: $(SRC_DIR) $(FIGS_DIR) $(DATA_DIR) data/combined_data_2006-2024.csv
 
 
 clean:
-	find data/ -type f ! -name 'pfex_2004-2024.csv' -exec rm {} \;
+	rm -rf data/*
 

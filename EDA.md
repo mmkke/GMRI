@@ -73,6 +73,12 @@ Records of locally caught fish were obtained throught the Portland Fish Exchange
 
 https://www.pfex.org/price-landing-tool/
 
+Report URL
+```
+https://reports.pfex.org/customreport_csv.asp?submitted=true&startdate=1%2F1%2F2004&enddate=1%2F1%2F2024
+```
+
+
 All fish species from 01/2004 - 01/2024 
 
 Returned 8051 records.
@@ -91,6 +97,7 @@ Attributes:
 
 ### Inflation Data
 Consumer Price Index for All Urban Consumers (CPI-U) was accessed using the BLS API.
+
 
 https://data.bls.gov/timeseries/CUUR0000SA0
 
@@ -284,6 +291,7 @@ Command to create \figs, \srs, and \data directories
 
 ### make get_data 
 Command to get retrieve data and run preprocessing for eda
+* Note that running get_data repeatedly over a short window of time may cause API's to refuse requests.
 
 ### make run_eda
 Command to run eda and create and populate figures for for EDA.md
