@@ -124,6 +124,30 @@ def price_distribution_boxplots(df):
     plt.savefig('figs/price_distribution_boxplots.png', bbox_inches='tight')
     plt.show()
 
+def price_distribution_boxplots2(df):
+
+    # Extract the year from the Period column
+    df['Year'] = df['YYYY/MM'].dt.year
+
+    fig, axs = plt.subplots(2, 1, figsize=(18, 9))
+
+    sns.boxplot(data=df, x='Year', y='AvgPrice_per_Kilo', hue='FishGroup', dodge=True, ax=axs[0])
+    axs[0].set_xlabel('Year')
+    axs[0].set_ylabel('Average Price per Kg')
+    axs[0].set_title('Distribution of Prices per Species')
+    axs[0].ticklabel_format(style='plain', axis='y')
+
+
+    sns.boxplot(data=df, x='Year', y='AvgPrice_per_Kilo', hue='Imported', dodge=True, ax=axs[1])
+    axs[1].set_xlabel('Year')
+    axs[1].set_ylabel('Average Price per Kg')
+    axs[1].set_title('Distribution of Prices per Species')
+    axs[1].ticklabel_format(style='plain', axis='y')
+
+
+    plt.tight_layout()
+    plt.savefig('figs/price_distribution_boxplots2.png', bbox_inches='tight')
+    plt.show()
 
 def amnt_vs_price_scatterplots(df):
 
@@ -149,7 +173,34 @@ def amnt_vs_price_scatterplots(df):
     plt.savefig('figs/amnt_vs_price_scatterplots.png', bbox_inches='tight')
     plt.show()
 
+def price_by_species_lineplots(df):
 
+    # Extract the year from the Period column
+    df['Year'] = df['YYYY/MM'].dt.year
+
+    fig, axs = plt.subplots(1, 2, figsize=(16, 6))
+
+    # plot cumulative distribution
+    sns.lineplot(data=df, x='Year', y='AvgPrice_per_Kilo', hue='Imported', ax=axs[0])
+    axs[0].set_xlabel('Year')
+    axs[0].set_ylabel('Price in USD per kg')
+    axs[0].set_title('Average Price in USD per kg, by origin')
+    axs[0].tick_params(axis='x', rotation=45)
+    axs[0].ticklabel_format(style='plain', axis='y')
+    axs[0].set_xticks(np.arange(2004, 2025, 1))
+
+    # plot dist per year
+    sns.lineplot(data=df, x='Year', y='AvgPrice_per_Kilo', hue='FishGroup', ax=axs[1])
+    axs[1].set_xlabel('Year')
+    axs[1].set_ylabel('Price in USD per kg')
+    axs[1].set_title('Average Price in USD per kg, by species')
+    axs[1].tick_params(axis='x', rotation=45)
+    axs[1].ticklabel_format(style='plain', axis='y')
+    axs[0].set_xticks(np.arange(2004, 2025, 1))
+
+    plt.tight_layout()
+    plt.savefig('figs/price_over_time_lineplots.png', bbox_inches='tight')
+    plt.show()
 
 def amnt_sold_by_species_barplots(df):
 
@@ -207,16 +258,44 @@ def amnt_sold_over_time_by_species_lineplots(df):
         ax[idx,0].set_ylabel('Amount Sold (kg)')
         ax[idx,0].set_title(f'{fish} Sold over Time, by species')
         ax[idx,0].ticklabel_format(style='plain', axis='y')
+        
 
         sns.lineplot(ax = ax[idx,1], data=df[df['FishGroup'] == fish], x=df['YYYY/MM'].apply(lambda x: x.to_timestamp()), y='AmountSold_by_Kilo', hue='Imported')
         ax[idx,1].set_xlabel('Time')
         ax[idx,1].set_ylabel('Amount Sold (kg)')
         ax[idx,1].set_title(f'{fish} Sold over Time, by species')
         ax[idx,1].ticklabel_format(style='plain', axis='y')
-
+        
 
     plt.tight_layout()
     plt.savefig('figs/amnt_sold_over_time_by_species_lineplots.png', bbox_inches='tight')
+    plt.show()
+
+
+def price_over_time_by_species_lineplots(df):
+
+    fishes = df['FishGroup'].unique()
+
+    fig, ax = plt.subplots(5, 2, figsize=(18,18))
+
+    for idx, fish in enumerate(fishes):
+
+        sns.lineplot(ax = ax[idx,0], data=df[df['FishGroup'] == fish], x=df['YYYY/MM'].apply(lambda x: x.to_timestamp()), y='AvgPrice_per_Kilo')
+        ax[idx,0].set_xlabel('Time')
+        ax[idx,0].set_ylabel('Average Price per Kg')
+        ax[idx,0].set_title(f'{fish} Price over Time, by species')
+        ax[idx,0].ticklabel_format(style='plain', axis='y')
+        
+
+        sns.lineplot(ax = ax[idx,1], data=df[df['FishGroup'] == fish], x=df['YYYY/MM'].apply(lambda x: x.to_timestamp()), y='AvgPrice_per_Kilo', hue='Imported')
+        ax[idx,1].set_xlabel('Time')
+        ax[idx,1].set_ylabel('Average Price per Kg')
+        ax[idx,1].set_title(f'{fish} Price over Time, by species')
+        ax[idx,1].ticklabel_format(style='plain', axis='y')
+        
+
+    plt.tight_layout()
+    plt.savefig('figs/price_over_time_by_species_lineplots.png', bbox_inches='tight')
     plt.show()
 
 

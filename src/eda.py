@@ -26,6 +26,7 @@ def main():
 
     # Price distribution by fish type, boxplots
     price_distribution_boxplots(df)
+    price_distribution_boxplots2(df)
     # Price vs amount sold, by import/domestic and by fish type
     amnt_vs_price_scatterplots(df)
     # Amount solde by species, total and by year
@@ -36,6 +37,10 @@ def main():
     amnt_sold_over_time_by_species_lineplots(df)
     # amount sold over time by country of origin
     amnt_sold_over_time_by_origin_lineplots(df)
+    # price over time
+    price_by_species_lineplots(df)
+    # price over time by species
+    price_over_time_by_species_lineplots(df)
 
 if __name__ == "__main__":
 

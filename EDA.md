@@ -259,9 +259,24 @@ As seen throughout the data, there is a major increase in cod and haddock import
 
 The mean price is generally higher for imported fish. Will price per kg generally ranges between 1 and 10 USD. Imported cod is more likely to command the highest prices. 
 
+Price distribution by year:
+
+<img src="figs/price_distribution_boxplots2.png" width="800">
+
+Mean price over time:
+<img src="figs/price_over_time_lineplots.png" width="800">
+
+Mean price over time be species, imported vs domestic:
+
+<img src="figs/price_over_time_by_species_lineplots.png" width="800">
+
+Price vs amount landed/imported:
+
 <img src="figs/amnt_vs_price_scatterplots.png" width="800">
 
 When plotting the price vs amount sold for all species there is potentially some clustering by origin and by species. 
+
+In general, 2013 seems ot be a major year in terms of where fish are being sourced from and the prices for fish, both domestic and imported. Overall there is much more variation in the prices of imported fish. Reasons for this variation and impact on domestic fish prices are one potential avenue for investigation. 
 
 
 ### Amount Sold over Time:
@@ -287,7 +302,6 @@ https://www.fisheries.noaa.gov/foss/f?p=215:200:5322272781522:::::
 
 
 
-<img src="figs/amnt_sold_over_time_by_origin_lineplots.png" width="800">
 
 
 # MAKE COMMANDS
