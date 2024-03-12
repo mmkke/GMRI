@@ -13,7 +13,7 @@ Date: 3/11/2024
 
 # Data Retrieval:
 
-Data for the following was retrieved from two sources and merged into a single dataframe.  
+Data for the following was retrieved from two sources and merged into a single dataframe. Additionally, data was retrieved from BLS CPI data to adjust for inflation.
 
 ### Imported
 
@@ -66,6 +66,7 @@ Attributes:
 
 
 
+
 ### Domestic
 
 Records of locally caught fish were obtained throught the Portland Fish Exchange's Price and Landing Tool.
@@ -88,6 +89,26 @@ Attributes:
 * YearNum (str) - Year Sold
 
 
+### Inflation Data
+Consumer Price Index for All Urban Consumers (CPI-U) was accessed using the BLS API.
+
+https://data.bls.gov/timeseries/CUUR0000SA0
+
+API query:
+```python
+query = '''
+headers = {'Content-type': 'application/json'}
+data = json.dumps({"seriesid": ['CUUR0000SA0'],"startyear":str(startYear), "endyear":str(EndYear)})
+requests.post('https://api.bls.gov/publicAPI/v2/timeseries/data/', data=data, headers=headers)
+'''
+```
+
+A scale was set based on the lastest available data.
+Essentially...
+For all rows in the CPI column
+    maxVal in CPI col / val in row
+
+The plan is to use this data to be able to compare dollars accurately as the values change across months and years
 
 # Data Processing:
 
@@ -254,9 +275,21 @@ https://www.st.nmfs.noaa.gov/Assets/commercial/trade/Trade2013.pdf
 <img src="figs/amnt_sold_over_time_by_origin_lineplots.png" width="800">
 
 
+# MAKE COMMANDS
+### make create_environment
+Command to create/activate the conda env
 
+### make setup_dir
+Command to create \figs, \srs, and \data directories
 
+### make get_data 
+Command to get retrieve data and run preprocessing for eda
 
+### make run_eda
+Command to run eda and create and populate figures for for EDA.md
+
+### make clean
+Command to clean Data
 
 
 # Questions/Next Steps:
@@ -270,3 +303,4 @@ What accounts for the increase in imported Cod and Hake around 2013. Is this an 
 # Acknowlefgements
 
 *  NOAA Fisheries Office of Science and Technology, Commercial Landings Query, Available at: www.fisheries.noaa.gov/foss, Accessed 03/10/2024
+* https://www.bls.gov/developers/api_python.htm, Accessed 3/7/2024
