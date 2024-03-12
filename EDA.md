@@ -263,7 +263,8 @@ Price distribution by year:
 
 <img src="figs/price_distribution_boxplots2.png" width="800">
 
-Mean price over time:
+Mean price over time:  
+
 <img src="figs/price_over_time_lineplots.png" width="800">
 
 Mean price over time be species, imported vs domestic:
