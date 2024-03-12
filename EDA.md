@@ -283,6 +283,9 @@ Additionally, the NOAA FIsheries GUI: confirms this increase suggesting it's not
 
 https://www.fisheries.noaa.gov/foss/f?p=215:2:16678495974590:::::
 
+https://www.fisheries.noaa.gov/foss/f?p=215:200:5322272781522:::::
+
+
 
 <img src="figs/amnt_sold_over_time_by_origin_lineplots.png" width="800">
 
@@ -311,6 +314,8 @@ Command to clean Data and Figs folder
 The date range for our data can be adjusted depending on the needs of the stakeholder. What range should we be investigating?  
 
 Should we adjust our aggregation for a more granular investigation species/product type?
+
+Would we benefit from sourcing all data through NOAA to expand the range of our data beyond fish landed and brought for sale to Portland (pfex data) specically, to include all of Maine?
 
 What accounts for the increase in imported Cod and Hake around 2013. Is this an error in data retrieval/processing, or does it represent a real trend? Can we confirm with outside sources. 
 
