@@ -287,6 +287,7 @@ Command to get retrieve data and run preprocessing for eda
 
 ### make run_eda
 Command to run eda and create and populate figures for for EDA.md
+* Note Arial Font may not be available on some systems and could throw warning
 
 ### make clean
 Command to clean Data

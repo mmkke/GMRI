@@ -32,7 +32,7 @@ get_data: $(SRC_DIR) $(DATA_DIR) data/pfex_2004-2024.csv
 	@echo "Complete."
 
 # runs eda, populates figures for EDA.md
-run_eda: $(SRC_DIR) $(FIGS_DIR) $(DATA_DIR) data/combined_data_2004-2024.csv
+run_eda: $(SRC_DIR) $(FIGS_DIR) $(DATA_DIR) data/combined_data_2006-2024.csv
 	@echo "Running file: src/eda.py"
 	python -B src/eda.py
 	@echo "Complete."
@@ -40,5 +40,5 @@ run_eda: $(SRC_DIR) $(FIGS_DIR) $(DATA_DIR) data/combined_data_2004-2024.csv
 
 
 clean:
-	rm data/* !data/pfex_2004-2024.csv
+	find data/ -type f ! -name 'pfex_2004-2024.csv' -exec rm {} \;
 

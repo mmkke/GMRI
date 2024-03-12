@@ -246,3 +246,23 @@ def amnt_sold_over_time_by_origin_lineplots(df):
     plt.tight_layout()
     plt.savefig('figs/amnt_sold_over_time_by_origin_lineplots.png', bbox_inches='tight')
     plt.show()
+
+
+def adjustForInflation(filePath, columnToAdjust, monthCol, yearCol):
+    inflationData = pd.read_csv('data/BLS_CPI_inflationData_2004_2024.csv')
+    df = pd.read_csv(filePath)
+    print(inflationData)
+   
+
+    df_inflation = (pd.merge(df, inflationData[['scale', 'year', 'period']], left_on=[yearCol, monthCol], right_on=['year', 'period'], how='left')).drop(columns=["period", "year"])
+    df_inflation = df_inflation.dropna(subset=['scale'])
+    df_inflation['inflationAdjusted_'+columnToAdjust] = df_inflation['scale'] * df_inflation[columnToAdjust]
+
+    df_inflation = df_inflation.sort_values(by=[yearCol, monthCol])
+    df_inflation=df_inflation.drop(columns=['scale'])
+
+    filepath = "data/inflation_adjusted_combined_data_2004-2024.csv"
+    df_inflation.to_csv(filepath, index=False) 
+    print(f'Combined Inflation adjusted data saved at: {filepath}')
+
+    return df_inflation.sort_values(by=[yearCol, monthCol])

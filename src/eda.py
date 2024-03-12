@@ -19,6 +19,8 @@ def main():
     # preprocess data
     df= preprocess_data(df)
 
+    #this is just for processing no analysis
+    adjustForInflation('data/combined_data_2006-2024.csv', "AvgPrice_per_Kilo","MonthNum", "YearNum")
 
     ## Visualizations
 

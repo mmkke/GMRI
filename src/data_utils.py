@@ -57,7 +57,6 @@ def get_noaa_data(api_key='klHRkURJrqCrXMZEtjPoSWwckiYazQFS', url='https://apps-
     df['date'] = pd.to_datetime(df['year'].astype(str) + '-' + df['month'].astype(str), format='%Y-%m')
 
     # save to csv and print filepath
-    filepath = "data/noaa_2004-2024.csv"
     df.to_csv(filepath, index=False)
     print(f'Data saved to: {filepath}')
 
@@ -196,7 +195,7 @@ def merge_data():
     # Concatenate the dataframes
     combined_df = pd.concat([local_df, imports_df], ignore_index=True)  
 
-    filepath = "data/combined_data_2004-2024.csv"
+    filepath = "data/combined_data_2006-2024.csv"
     combined_df.to_csv(filepath, index=False) 
     print(f'Combined data saved at: {filepath}')
 
@@ -207,6 +206,8 @@ def merge_data():
 
 def inflationDataApiCall(startYear, EndYear):
     #adapted from https://www.bls.gov/developers/api_python.htm
+    #data from
+    #https://data.bls.gov/timeseries/CUUR0000SA0 Consumer Price Index for All Urban Consumers (CPI-U)
 
     
     headers = {'Content-type': 'application/json'}
@@ -237,10 +238,11 @@ def getInflationData():
     cpiData['year'] = cpiData['year'].astype(int)
     cpiData['period'] = cpiData['period'].astype(int)
 
-    
+    #set base value to the lastest available data
     baseVal = cpiData[cpiData["year"] == cpiData['year'].max()]
     baseVal = baseVal[baseVal["period"] == baseVal['period'].max()]['value']
 
+    #divide the base value by the value of any given month to get the scale
     cpiData['scale'] =  baseVal.iloc[0] / cpiData['value'] 
     cpiData =cpiData.sort_values(by=['year', 'period'])
     
@@ -261,25 +263,6 @@ def getInflationData():
 
     return cpiData
 
-getInflationData()
 
-def adjustForInflation(filePath, columnToAdjust, monthCol, yearCol):
-    inflationData = pd.read_csv('data/BLS_CPI_inflationData_2004_2024.csv')
-    df = pd.read_csv(filePath)
-    print(inflationData)
-   
 
-    df_inflation = (pd.merge(df, inflationData[['scale', 'year', 'period']], left_on=[yearCol, monthCol], right_on=['year', 'period'], how='left')).drop(columns=["period", "year"])
-    df_inflation = df_inflation.dropna(subset=['scale'])
-    df_inflation['inflationAdjusted_'+columnToAdjust] = df_inflation['scale'] * df_inflation[columnToAdjust]
 
-    df_inflation = df_inflation.sort_values(by=[yearCol, monthCol])
-    df_inflation=df_inflation.drop(columns=['scale'])
-
-    filepath = "data/inflation_adjusted_combined_data_2004-2024.csv"
-    df_inflation.to_csv(filepath, index=False) 
-    print(f'Combined Inflation adjusted data saved at: {filepath}')
-
-    return df_inflation.sort_values(by=[yearCol, monthCol])
-
-print(adjustForInflation("data/combined_data_2004-2024.csv", 'AvgPrice_per_Kilo', 'MonthNum', 'YearNum'))

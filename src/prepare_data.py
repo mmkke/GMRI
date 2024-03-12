@@ -18,7 +18,7 @@ def main():
 
     getInflationData()
 
-    adjustForInflation('data/combined_data_2004-2024.csv', "AvgPrice_per_Kilo","MonthNum", "YearNum")
+    
 
 
 if __name__ == "__main__":
