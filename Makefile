@@ -26,7 +26,7 @@ setup_dir:
 	@echo "Directories created: $(SRC_DIR) $(FIGS_DIR)"
 
 # retrievs data and preps for eda
-get_data: $(SRC_DIR) $(DATA_DIR) 
+get_data: check_data $(SRC_DIR) $(DATA_DIR) 
 	@echo "Running file: src/prepare_data.py"
 	python -B src/prepare_data.py
 	@echo "Complete."
@@ -40,6 +40,11 @@ run_eda: $(SRC_DIR) $(FIGS_DIR) $(DATA_DIR) data/combined_data_2006-2024.csv
 
 
 clean:
-	rm -rf data/*
+	rm -rf data
 	rm -rf figs/*
 
+#helper function to check if data folder exists
+check_data:
+	if [ ! -d "data" ]; then \
+		$(MAKE) setup_dir; \
+	fi
