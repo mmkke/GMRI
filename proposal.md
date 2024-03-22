@@ -7,10 +7,10 @@ The Barents Sea cod fishery, shared by Russia and Norway, has been shrinking its
 Our project aims to investigate the impact of the decreased cod/haddock catch in the Barents Sea region on the price of local stock of both cod/haddock and substitute species like pollock. Specifically, we will focus on whether the increasingly constrained cod/haddock fisheries in the northeast Atlantic have benefited local Maine fishermen, particularly in terms of the price of typically lesser-valued fish like pollock. 
 
 **3. Methodology**
-Our analysis will include a historic price analysis to understand the effect of the volume and price of cod/haddock imported from the Barents Sea region on domestic fish prices. Our particular focus will be the price of domestic Pollock. This will involve regression analysis and potentially other approaches to better understand the relationship between these factors. 
+Our analysis will include a historic price analysis to understand the effect of the volume and price of cod/haddock imported from the Barents Sea region on domestic fish prices. Our particular focus will be the price of domestic Pollock. This will involve correlation and regression analyses and potentially other approaches to better understand the relationship between these factors. 
 
 **4. Feasibility and Scope**
-While economic factors impacting price are complex, our analysis aims to provide meaningful insights into the impact of decreased cod/haddock catch on local fish prices. (4)(5) By focusing on specific regions and species, we believe our analysis will offer valuable insights for policymakers and stakeholders in the fishing industry.
+While economic factors impacting price are complex, our analysis aims to provide meaningful insights into the impact of decreased cod/haddock catch on local fish prices. (4)(5) Untangling or otherwise accounting for these geopolitical and environmental factors will be essential to achieving a actionable result. However, by focusing on specific regions and species, we believe our analysis will offer valuable insights for policymakers and stakeholders in the fishing industry.
 
 **5. Conclusion**
 In conclusion, our project proposal seeks to shed light on the economic implications of decreased cod/haddock catch on local fish prices. Through careful analysis and consideration of various factors, we aim to provide valuable insights that can inform decision-making in the fishing industry.
@@ -34,3 +34,5 @@ In conclusion, our project proposal seeks to shed light on the economic implicat
 [Groundfish: Supplies slightly down in 2023 | GLOBEFISH | Food and Agriculture Organization of the United Nations](https://www.fao.org/in-action/globefish/market-reports/resource-detail/en/c/1634023/)
 
 5) https://www.fao.org/in-action/globefish/market-reports/resource-detail/en/c/1460139/
+
+[Supplies may become tighter | GLOBEFISH | Food and Agriculture Organization of the United Nations](https://www.fao.org/in-action/globefish/market-reports/resource-detail/en/c/1460139/)
