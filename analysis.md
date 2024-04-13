@@ -36,6 +36,9 @@ ___
 ### Correlations and Pairplots
 
 
+### Shuffling
+
+
 ### Scaling
 
 
@@ -44,9 +47,9 @@ ___
 
 ### Statsmodel ANOVA
 
-### Regression
+### Univariate Regression
 
-### Regression with FFS
+### Multivariate Regression
 
 ### PCR
 
