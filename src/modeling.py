@@ -45,17 +45,22 @@ def main():
     ### Statsmodel ANOVA
     get_regression_stats(X, y)
 
-    ### Regression
+    ### Univariate regressions
+    univariate_regression(X, y)
+
+    ### Multivairate Regression
     multivariate_regression(X, y)
 
     ### PCR
     pcr_regression(X, y)
 
     ### Ridge
-    ridge_regressiomn(X, y)
+    alphas = np.logspace(-4, 1.5, 1000)
+    ridge_regression(X, y, alphas)
 
     ### Lasso
-    lasso_regression(X, y)
+    alphas = np.logspace(-4, 0, 1000)
+    lasso_regression(X, y, alphas)
     lasso_path(X, y)
 
 ###################################################################################################################

@@ -43,25 +43,25 @@ def main():
     data_filtered = data[data['Country'].isin(['USA', 'ICELAND', 'NORWAY', 'RUSSIAN FEDERATION'])]
 
     ### Create Pivot Tables
-    # Drop the 'Country' column
+    # drop the 'Country' column
     data_without_country = data_filtered.drop('Country', axis=1)
 
-    # Create a unique identifier for each fish group by its import status
+    # create a unique identifier for each fish group by its import status
     data_without_country['FishGroup_ImportStatusValue'] = np.where(data_without_country['Imported'] == 'Yes',
                                                             data_without_country['FishGroup'] + "_Imported_USD",
                                                             data_without_country['FishGroup'] + "_Domestic_USD")
 
-    # Create a unique identifier for each fish group by its import status
+    # create a unique identifier for each fish group by its import status
     data_without_country['FishGroup_ImportStatusAmount'] = np.where(data_without_country['Imported'] == 'Yes',
                                                             data_without_country['FishGroup'] + "_Imported_Kilos",
                                                             data_without_country['FishGroup'] + "_Domestic_Kilos")
 
-    # Pivot the table to have dates as rows and the unique fish group import statuses as columns, with average prices as values
+    # pivot the table to have dates as rows and the unique fish group import statuses as columns, with average prices as values
     df_value = data_without_country.pivot_table(index='YYYY/MM', 
                                                 columns='FishGroup_ImportStatusValue', 
                                                 values='AvgPrice_per_Kilo',
                                                 aggfunc='mean')
-    # Pivot the table to have dates as rows and the unique fish group import statuses as columns, with average prices as values
+    # pivot the table to have dates as rows and the unique fish group import statuses as columns, with average prices as values
     df_amount = data_without_country.pivot_table(index='YYYY/MM', 
                                                 columns='FishGroup_ImportStatusAmount', 
                                                 values='AmountSold_by_Kilo',
@@ -204,7 +204,8 @@ def main():
 
     #pairplot
     sns.pairplot(data=filtered_df_range)
-    plt.title('Feature Pairplots', bbox_inches='tight')
+    plt.title('Features Pairplots')
+    plt.savefig('figs/pairplots', bbox_inches='tight')
     plt.show();
     
     ### Shuffle

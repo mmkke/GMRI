@@ -20,16 +20,29 @@ from sklearn.model_selection import train_test_split
 # metrics
 from sklearn.metrics import mean_squared_error, r2_score
 
-###################################################################################################################
+
 ###################################################################################################################
 ## Modules
 
 from eda_utils import *
-###################################################################################################################
+
 ###################################################################################################################
 ## Functions
+###################################################################################################################
 
 def get_regression_stats(X, y):
+    '''
+    Description: 
+            Prints the statmodel summary of regression statistics.
+
+            https://www.statsmodels.org/stable/index.html
+
+    Params:
+            X (ndarray): Feature Matrix
+            y (ndarray): Target Vector
+    Returns: 
+            None
+    '''
 
     # run stastmodel
     X_statsmodel = sm.add_constant(X.values) 
@@ -52,8 +65,104 @@ def get_regression_stats(X, y):
 
 ###################################################################################################################
 
+def univariate_regression(X, y):
+    '''
+    Description:
+                Loops over all columns in Feature Materix and performs a linear regression for each. Plots the 
+                regression line and residual plots.
+
+                https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html
+    Params:
+            X (ndarray): Feature Matrix
+            y (ndarray): Target Vector
+    Returns: None
+    '''
+    reg_dict_list = []
+
+    for col in X:
+
+        X_simple = X[col].values.reshape(-1, 1)
+
+        model = LinearRegression()
+
+        X_train, X_test, y_train, y_test = train_test_split(X_simple, y, test_size=0.2, random_state=42)
+
+        model.fit(X_train, y_train)
+
+        y_pred = model.predict(X_test)
+        residuals = y_test - y_pred
+
+        score = model.score(X_test, y_test)
+
+        # Calculate and print coefficients
+        print("Model score:", score)
+
+        # Calculate and print the intercept and coef
+        print("Intercept:", model.intercept_)
+        print("Coefficient:", model.coef_)
+
+        # Calculate and print the mean squared error (MSE)
+        mse = mean_squared_error(y_test, y_pred)
+        print("Mean Squared Error:", mse)
+
+        r2 = r2_score(y_test, y_pred)
+        print("R-squared:", r2)
+
+        fig, ax = plt.subplots(1, 2)
+        # regression line
+        ax[0].vlines(X_test, ymin=y_test, ymax=y_pred, color='k', linewidth=.5)
+        ax[0].scatter(X_test, y_test, c='r', s=10)
+        ax[0].plot(X_test, y_pred, c='b')
+        ax[0].set_ylabel('Domestic Pollock Prices')
+        ax[0].set_xlabel(col)
+        ax[0].set_title('Regression Line')
+        # residual plots
+        ax[1].scatter(X_test, residuals)
+        ax[1].axhline(0, color='red', linestyle='--')  
+        ax[1].set_ylabel('Residuals')
+        ax[1].set_xlabel(col)
+        ax[1].set_title('Residual Plot')
+
+        plt.tight_layout()
+        plt.subplots_adjust(top=0.9)
+        fig.suptitle(f'Simple Linear Regression: {col}')
+        plt.savefig(f'figs/univariate_{col}', bbox_inches='tight')
+        plt.show();
+
+        reg_dict_list.append({
+                                'Regressor': col,
+                                'R-squared': r2,
+                                'Mean Square Error': mse,
+                                'Intercept': model.intercept_,
+                                'Coefficient': model.coef_
+                                })
+
+    results_df = pd.DataFrame(reg_dict_list)
+
+    # plot all r-squared values
+    sns.barplot(data=results_df, x='Regressor', y='R-squared')
+    for i, value in enumerate(results_df['R-squared'].values):
+        plt.text(i, (value + 0.005), '{:.3f}'.format(value), ha='center')
+    plt.title(r'Explained Variance (R^2) for Univariate Regressions')
+    plt.xticks(rotation=60)
+    plt.legend()
+    plt.savefig('figs/univariate_r2_values', bbox_inches='tight')
+    plt.show()
+
+###################################################################################################################
+
 def multivariate_regression(X, y):
-    
+    '''
+    Description:
+            Performs mutivariate regression  using sklearns LinearRegression() object and prints metrics. 
+            Plots a barplot of the coeficients and and residuals plot. 
+
+            https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html
+    Params:
+            X (ndarray): Feature Matrix
+            y (ndarray): Target Vector
+    Returns: None
+    '''  
     # train/test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -64,14 +173,12 @@ def multivariate_regression(X, y):
     y_pred = model.predict(X_test)
     residuals = y_test - y_pred
 
-    score = model.score(X_test, y_test)
     # evaluate 
-    print("Model score:", score)
-    print("Intercept:", model.intercept_)
     mse = mean_squared_error(y_test, y_pred)
-    print("Mean Squared Error:", mse)
     r2 = r2_score(y_test, y_pred)
     print("R-squared:", r2)
+    print("Mean Squared Error:", mse)
+    print("Intercept:", model.intercept_)
 
     # get coef dataframe
     coef_df = pd.DataFrame(model.coef_.ravel(), X.columns, columns=['Coefficients'])
@@ -86,7 +193,8 @@ def multivariate_regression(X, y):
     plt.xlabel('Features')
     plt.ylabel('Coefficient Value')
     plt.title('Coefficients of the Linear Regression Model (Sorted by Magnitude)')
-    plt.savefig('mulit_reg_coefs', bbox_inches='tight')
+    plt.xticks(rotation=60)
+    plt.savefig('figs/mulit_reg_coefs', bbox_inches='tight')
     plt.show()
 
     # get residuals
@@ -99,14 +207,25 @@ def multivariate_regression(X, y):
     plt.ylabel('Residuals')
     plt.title('Residual Plot')
     plt.axhline(y=0, color='r', linestyle='-')
-    plt.savefig('mulit_reg_residuals', bbox_inches='tight')
+    plt.savefig('figs/mulit_reg_residuals', bbox_inches='tight')
     plt.show()
 
 
 
 
-def pcr_regression(X, y):
+def pcr_regression(X, y, cv=5):
+    '''
+    Description:
+            Performs pcr regression  using sklearns PCA and LInear Regression objects and prints metrics. 
+            Plots a barplot of the coeficients and and test/train score plot.
 
+            https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html
+            https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html
+    Params:
+            X (ndarray): Feature Matrix
+            y (ndarray): Target Vector
+    Returns: None
+    '''
 
     # train/test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -119,11 +238,11 @@ def pcr_regression(X, y):
 
     # PCA values for gridsearch
     param_grid = {
-        'pca__n_components': np.arange(2, X.shape[1])  # Specify the range of n_components to search over
+        'pca__n_components': np.arange(1, X.shape[1])  # Specify the range of n_components to search over
     }
 
     # Grid search with 5-fold cross-validation
-    grid_search = GridSearchCV(pipeline, param_grid, cv=5, scoring='r2', return_train_score=True)
+    grid_search = GridSearchCV(pipeline, param_grid, cv=cv, scoring='r2', return_train_score=True)
     grid_search.fit(X_train, y_train)
     best_model = grid_search.best_estimator_
 
@@ -135,9 +254,9 @@ def pcr_regression(X, y):
     results_df = pd.DataFrame(grid_search.cv_results_)
 
     # Evaluate
+    mse = mean_squared_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
     print("R-squared:", r2)
-    mse = mean_squared_error(y_test, y_pred)
     print("Mean Squared Error:", mse)
     print("Intercept:", best_model.named_steps['regression'].intercept_)
     print("Best Parameters:", grid_search.best_params_)
@@ -154,7 +273,10 @@ def pcr_regression(X, y):
 
     # Plot the explained variance ratio
     plt.figure(figsize=(10, 6))
-    plt.bar(range(1, len(explained_variance_ratio) + 1), explained_variance_ratio, alpha=0.8)
+    # plot
+    plt.bar(range(1, len(explained_variance_ratio) + 1), 
+            explained_variance_ratio, alpha=0.8)
+    # annot
     for i, value in enumerate(explained_variance_ratio):
         plt.text(i+1, (abs(value) + 0.005), '{:.3f}'.format(value), ha='center')
     plt.xlabel('Principal Component')
@@ -162,38 +284,69 @@ def pcr_regression(X, y):
     plt.title('Explained Variance Ratio by Principal Component')
     plt.xticks(range(1, len(explained_variance_ratio) + 1))
     plt.grid(axis='y', linestyle='--', alpha=0.6)
-    plt.savefig('PCR_explained_variance', bbox_inches='tight')
+    plt.savefig('figs/PCR_explained_variance', bbox_inches='tight')
     plt.show()
 
-    # plot test train scores
+    ## plot test train scores
     plt.figure(figsize=(6,6))
-    plt.plot(results_df['param_pca__n_components'], results_df[['mean_test_score']], label='Test Scores', c='orange')
-    plt.plot(results_df['param_pca__n_components'], results_df[['mean_train_score']], label='Training Scores', c='blue')
+    # train score
+    plt.plot(results_df['param_pca__n_components'], 
+             results_df[['mean_test_score']], 
+             label='Test Scores', c='orange')
+    # train score
+    plt.plot(results_df['param_pca__n_components'], 
+             results_df[['mean_train_score']], 
+             label='Training Scores', c='blue')
+    # +/- std
     plt.fill_between(x=results_df['param_pca__n_components'].astype(float), 
                     y1=results_df['mean_test_score'] + results_df['std_test_score'], 
                     y2=results_df['mean_test_score'] - results_df['std_test_score'], 
                     color='orange', alpha=0.5)
+    # max test line
+    plt.axhline(y=results_df['mean_test_score'].max(), 
+                color='red', linestyle='dotted',
+                label='Max Test Score')
+    # max test annot
+    plt.text(x=9, y=results_df['mean_test_score'].max()+0.01, 
+             s=rf'Max $R^2$={r2:.3f}', c='red')
+    # max test marker
+    plt.scatter(x= results_df['param_pca__n_components'][results_df['mean_test_score'].idxmax()], 
+                y=results_df['mean_test_score'].max(),
+                marker='x', color='red')
     plt.xlabel('n_components')
     plt.ylabel(r'Score ($R^2$)')
     plt.legend()
-    plt.savefig('PCR_text_train', bbox_inches='tight')
+    plt.title(r'PCR: Test and Train Explained Variance Ratio $(R^2)$')
+    plt.savefig('figs/PCR_text_train', bbox_inches='tight')
     plt.show();
 
 ###################################################################################################################
 
-def ridge_regressiomn(X, y):
+def ridge_regression(X, y, alphas, cv=5):
+    '''
+    Description:
+            Performs ridge regression  using sklearns Ridge Regression object, and perfmorms a gridsearch with cross 
+            validation over regularization parameter and prints metrics. Plots a barplot of the coeficients and and 
+            test/train score plot.
 
+            https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html
+            https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html
+    Params:
+            X (ndarray): Feature Matrix
+            y (ndarray): Target Vector
+            alphas (ndarray): Alpha values for gridsearch.
+            cv (int): Number of folds for cross validation.
+
+    Returns: None
+    '''
     # train/test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # Define the model
     ridge = Ridge()
 
-    # Params for gridsearch
-    alphas = np.logspace(-4, 2, 1000)
-
     # Define the grid search with cross-validation
-    grid = GridSearchCV(estimator=ridge, param_grid={'alpha': alphas}, scoring='r2', cv=5, return_train_score=True)
+    grid = GridSearchCV(estimator=ridge, param_grid={'alpha': alphas}, scoring='r2', cv=cv, return_train_score=True)
 
     # Fit the grid search to the data
     grid.fit(X_train, y_train)
@@ -212,52 +365,91 @@ def ridge_regressiomn(X, y):
     # Evaluate the model
     y_pred = ridge_best.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
-    print("Mean Squared Error with best alpha:", mse)
     r2 = r2_score(y_test, y_pred)
+    print("Mean Squared Error with best alpha:", mse)
     print("R-squared:", r2)
 
+    # create coef dataframe
     coef_df = pd.DataFrame(ridge_best.coef_.ravel(), X.columns, columns=['Coefficients'])
     print(coef_df)
 
+    # sort coeficients by magnitude
     coef_df['Abs_Coefficients'] = coef_df['Coefficients'].abs()
     sorted_coef_df = coef_df.sort_values(by='Abs_Coefficients', ascending=False)
+
+    # coef barplot
     sns.barplot(sorted_coef_df['Coefficients'])
+    # annot
     for i, value in enumerate(sorted_coef_df['Coefficients'].values):
-        plt.text(i, (value + 0.005), '{:.3f}'.format(value), ha='center') 
+        plt.text(i, (value + 0.005), '{:.3f}'.format(value), ha='center')
+    # plot attributes 
     plt.xlabel('Features')
     plt.ylabel('Coefficient Value')
     plt.title('Coefficients of the Ridge Regression Model (Sorted by Magnitude)')
-    plt.savefig('ridge_coef', bbox_inches='tight')
+    plt.xticks(rotation=60)
+    plt.savefig('figs/ridge_coef', bbox_inches='tight')
     plt.show()
 
+    ## plot train test scores
     plt.figure(figsize=(6,6))
-    plt.plot(results_df['param_alpha'], results_df[['mean_test_score']], label='Test Scores', c='orange')
-    plt.plot(results_df['param_alpha'], results_df[['mean_train_score']], label='Training Scores', c='blue')
+    # test scores
+    plt.plot(results_df['param_alpha'], 
+             results_df[['mean_test_score']], 
+             label='Test Scores', c='orange')
+    # train scores
+    plt.plot(results_df['param_alpha'], 
+             results_df[['mean_train_score']], 
+             label='Training Scores', c='blue')
+    # +/- std
     plt.fill_between(x=results_df['param_alpha'].astype(float), 
                     y1=results_df['mean_test_score'] + results_df['std_test_score'], 
                     y2=results_df['mean_test_score'] - results_df['std_test_score'], 
                     color='orange', alpha=0.5)
+    # max test line
+    plt.axhline(y=results_df['mean_test_score'].max(), 
+                color='red', linestyle='dotted',
+                label='Max Test Score')
+    # max test annot
+    plt.text(x=5.5, y=results_df['mean_test_score'].max()+0.01, 
+             s=rf'Max $R^2$={r2:.3f}', c='red')
+    # max test marker
+    plt.scatter(x= results_df['param_alpha'][results_df['mean_test_score'].idxmax()], 
+                y=results_df['mean_test_score'].max(),
+                marker='x', color='red')
     plt.xlabel('Regularization (Alpha)')
     plt.ylabel(r'Score ($R^2$)')
     plt.legend()
-    plt.savefig('ridge_text_train', bbox_inches='tight')
+    plt.title(r'Ridge: Test and Train Explained Variance Ratio $(R^2)$')
+    plt.savefig('figs/ridge_text_train', bbox_inches='tight')
     plt.show();
 
 ###################################################################################################################
 
-def lasso_regression(X, y):
+def lasso_regression(X, y, alphas, cv=5):
+    '''
+    Description:
+            Performs ridge regression  using sklearns Ridge Regression object, and perfmorms a gridsearch with cross 
+            validation over regularization parameter and prints metrics. Plots a barplot of the coeficients and and 
+            test/train score plot.
 
+            https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html
+            https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html
+    Params:
+            X (ndarray): Feature Matrix
+            y (ndarray): Target Vector
+            alphas (ndarray): Alpha values for gridsearch.
+            cv (int): Number of folds for cross validation.
+
+    Returns: None
+    '''
     # train/test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # Define the model
     lasso = Lasso()
 
-    # Params for gridsearch
-    alphas = np.logspace(-4, 0, 1000)
-
     # Define the grid search with cross-validation
-    grid = GridSearchCV(estimator=lasso, param_grid={'alpha': alphas}, scoring='r2', cv=5, return_train_score=True)
+    grid = GridSearchCV(estimator=lasso, param_grid={'alpha': alphas}, scoring='r2', cv=cv, return_train_score=True)
 
     # Fit the grid search to the data
     grid.fit(X_train, y_train)
@@ -276,8 +468,8 @@ def lasso_regression(X, y):
     # Evaluate the model
     y_pred = lasso_best.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
-    print("Mean Squared Error with best alpha:", mse)
     r2 = r2_score(y_test, y_pred)
+    print("Mean Squared Error with best alpha:", mse)
     print("R-squared:", r2)
 
     # coef dataframe
@@ -287,31 +479,62 @@ def lasso_regression(X, y):
     # plot coefficient magnitude
     coef_df['Abs_Coefficients'] = coef_df['Coefficients'].abs()
     sorted_coef_df = coef_df.sort_values(by='Abs_Coefficients', ascending=False)
-    sorted_coef_df['Coefficients'].plot(kind='bar', legend=False)
+    sns.barplot(sorted_coef_df['Coefficients'])
+    # annotation
+    for i, value in enumerate(sorted_coef_df['Coefficients'].values):
+        plt.text(i, (value + 0.005), '{:.3f}'.format(value), ha='center')
     plt.xlabel('Features')
     plt.ylabel('Coefficient Value')
     plt.title('Coefficients of the Lasso Regression Model (Sorted by Magnitude)')
-    plt.savefig('ridge_coef', bbox_inches='tight')
+    plt.xticks(rotation=60)
+    plt.savefig('figs/lasso_coef', bbox_inches='tight')
     plt.show()
 
-    # plot train vs test score
+    ## plot train vs test score
     plt.figure(figsize=(6,6))
-    plt.plot(results_df['param_alpha'], results_df[['mean_test_score']], label='Test Scores', c='orange')
-    plt.plot(results_df['param_alpha'], results_df[['mean_train_score']], label='Training Scores', c='blue')
+    # testing score
+    plt.plot(results_df['param_alpha'], 
+             results_df[['mean_test_score']], 
+             label='Test Scores', c='orange')
+    # training score
+    plt.plot(results_df['param_alpha'], 
+             results_df[['mean_train_score']], 
+             label='Training Scores', c='blue')
+    # +/-std
     plt.fill_between(x=results_df['param_alpha'].astype(float), 
                     y1=results_df['mean_test_score'] + results_df['std_test_score'], 
                     y2=results_df['mean_test_score'] - results_df['std_test_score'], 
                     color='orange', alpha=0.5)
+    # max test line
+    plt.axhline(y=results_df['mean_test_score'].max(), 
+                color='red', linestyle='dotted',
+                label='Max Test Score')
+    # max test annot
+    plt.text(x=0.3, y=results_df['mean_test_score'].max()+0.01, 
+             s=rf'Max $R^2$={r2:.3f}', c='red')
+    # max test marker
+    plt.scatter(x= results_df['param_alpha'][results_df['mean_test_score'].idxmax()], 
+                y=results_df['mean_test_score'].max(),
+                marker='x', color='red')
     plt.xlabel('Regularization (Alpha)')
     plt.ylabel(r'Score ($R^2$)')
     plt.legend()
-    plt.savefig('lasso_text_train', bbox_inches='tight')
+    plt.title(r'LASSO: Test and Train Explained Variance Ratio $(R^2)$')
+    plt.savefig('figs/lasso_text_train', bbox_inches='tight')
     plt.show();
 
 ###################################################################################################################
 def lasso_path(X, y):
+    '''
+    Description: 
+            Plots the LARS Path for LASSO Regression. 
 
-    from sklearn.linear_model import lars_path
+            https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.lars_path.html
+    Params:
+            X (ndarray): Feature Matrix
+            y (ndarray): Target Vector
+    Returns: None
+    '''
 
     X_array = X.to_numpy()
     y_array = y.to_numpy().ravel()
@@ -361,7 +584,7 @@ def lasso_path(X, y):
     plt.title("LASSO Path")
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig('LARS_path', bbox_inches='tight')
+    plt.savefig('figs/LARS_path', bbox_inches='tight')
     plt.show()
 
 
