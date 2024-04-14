@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from src.Random_Model import Random_Model
 
 # preprocessing
 from sklearn.decomposition import PCA
@@ -609,6 +610,22 @@ def lasso_path(X, y):
     plt.tight_layout()
     plt.savefig('figs/LARS_path', bbox_inches='tight')
     plt.show()
+
+
+def randomModel(X, y):
+    '''
+    model that randomly assigns y_values based on the mean and stdv of the y_values in the training data
+    only use is for significance testing
+    '''
+
+    # train/test split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    random_model = Random_Model()
+
+
+    #fit and predict with random model
+    random_model.fit(y_train)
+    y_pred = random_model.fit(X_test)
 
 
 ###################################################################################################################
