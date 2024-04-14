@@ -36,14 +36,13 @@ def main():
     print('*'*100)
     print('*'*100)
     print('STATSMODEL SUMMARY')
-    model_dict = get_regression_stats(X, y)
+    get_regression_stats(X, y)
 
     ### Univariate regressions
     print('*'*100)
     print('*'*100)
     print('UNIVARIATE REGRESSIONS')
-    model_dict = univariate_regression(X, y)
-    significanceDict['Univariate regression'] = model_dict
+ 
 
     ### Multivairate Regression
     print('*'*100)
@@ -83,6 +82,7 @@ def main():
     print('SIGNIFIGANCE TESTING')
     tests = significanceTester(significanceDict)
     print(tests['p_values'])
+    print(tests['f_stats'])
 
 
 ###################################################################################################################

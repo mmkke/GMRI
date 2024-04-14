@@ -18,13 +18,15 @@ def f_test_variables(model_dict):
     n= len(y_test)
     p= x_test.shape[1]
 
-    degreesOfFreedom =  n-p-1
+    degreesOfFreedom =  n-p
 
 
     fDict = {}
     fDict['rss'] = rss
     fDict['p'] = p
     fDict['dof'] = degreesOfFreedom
+
+
 
     return fDict
 
