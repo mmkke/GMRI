@@ -1,6 +1,8 @@
 import numpy as np
 from scipy.stats import f
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def f_test_variables(model_dict):
     y_pred = model_dict.get('y_pred')
@@ -35,6 +37,8 @@ def f_test(model_dict_1, model_dict_2):
     '''
     model_dict_1: null hypthosis model
     model_dict_2: test model
+
+    source * https://sites.duke.edu/bossbackup/files/2013/02/FTestTutorial.pdf
     '''
 
     #get variable Dicts
@@ -75,15 +79,25 @@ def significanceTester(modelDict):
                 print(m1)
                 print(m2)
                 fDict = f_test(modelDict[m1],modelDict[m2])
-                f_test_df.at[m1, m2] = fDict.get('f_stat')
-                p_val_df.at[m1,m2] = fDict.get('p_value')
+                f_test_df.at[m1, m2] = float(fDict.get('f_stat'))
+                p_val_df.at[m1,m2] = float(fDict.get('p_value'))
 
             else:
-                f_test_df.at[m1, m2] = None
-                p_val_df.at[m1,m2] = None
+                f_test_df.at[m1, m2] = np.nan
+                p_val_df.at[m1,m2] = np.nan
 
 
     returnDict = {}
     returnDict['f_stats'] = f_test_df
     returnDict['p_values'] = p_val_df
+    f_test_df = f_test_df.apply(pd.to_numeric, errors='coerce')
+    p_val_df = p_val_df.apply(pd.to_numeric, errors='coerce')
+    print(p_val_df.dtypes)
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(p_val_df, cmap="YlGnBu", annot=True,)
+    plt.title("Model Significance Testing f_test P-Values Heatmap")
+    plt.xlabel("Test Model")
+    plt.ylabel("Null Model")
+    plt.savefig('figs/model_significance_testing_p_vals.png', bbox_inches='tight')
+    plt.show()
     return returnDict
