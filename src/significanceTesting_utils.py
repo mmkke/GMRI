@@ -14,10 +14,11 @@ def f_test_variables(model_dict):
     #residual sum of squares
     rss = np.sum(residuals**2)
 
-    #degrees of freedom residuals
+    
     n= len(y_test)
     p= x_test.shape[1]
-    degreesOfFreedom = n -p
+
+    degreesOfFreedom =  n-p-1
 
 
     fDict = {}
@@ -38,8 +39,12 @@ def f_test(model_dict_1, model_dict_2):
     m1 = f_test_variables(model_dict_1)
     m2 = f_test_variables(model_dict_2)
 
-    f_stat = ( (m1['rss'] - m2['rss']) / (m1['p'] - m2['p']) ) / (m2['rss'] / m2['dof'])
-    p_value = f.sf(f_stat, m2['p'] - m1['p'], m2['dof'])
+    if m1['dof'] - m2['dof'] == 0:
+        f_stat = m1['rss'] / m2['rss']
+    else:
+        f_stat = ( (m1['rss'] - m2['rss']) / (m1['dof'] - m2['dof']) ) / (m2['rss'] / m2['dof'])
+
+    p_value = 1 - f.cdf(f_stat, m1['dof'], m2['dof'])
 
     returnDict = {}
 
