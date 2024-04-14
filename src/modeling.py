@@ -82,7 +82,7 @@ def main():
     print('SIGNIFIGANCE TESTING')
     tests = significanceTester(significanceDict)
     print(tests['p_values'])
-    print(tests['f_stats'])
+    
 
 
 ###################################################################################################################

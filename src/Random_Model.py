@@ -10,6 +10,7 @@ class Random_Model:
         self.std = np.std(y)
 
     def predict(self, X):
+        np.random.seed(42)
         if self.mean is None or self.std is None:
             raise ValueError('Model needs to be fit')
         
