@@ -6,6 +6,7 @@ import numpy as np
 ## Modules
 from eda_utils import *
 from modeling_utils import *
+from significanceTesting_utils import significanceTester
 
 ###################################################################################################################
 ## Functions
@@ -21,28 +22,48 @@ def main():
     X = pd.read_csv('data/feature_matrix.csv')
     y = pd.read_csv('data/target_vector.csv')
 
+    #Dictionary with information for significance tesing
+    significanceDict = {}
+
     ## Modeling
 
+    ### Random Model
+    model_dict = randomModel(X,y)
+    significanceDict['random'] = model_dict
+
     ### Statsmodel ANOVA
-    get_regression_stats(X, y)
+    model_dict = get_regression_stats(X, y)
+    significanceDict['Statsmodel ANOVA'] = model_dict
 
     ### Univariate regressions
-    univariate_regression(X, y)
+    model_dict = univariate_regression(X, y)
+    significanceDict['Univariate regression'] = model_dict
 
     ### Multivairate Regression
-    multivariate_regression(X, y)
+    model_dict = multivariate_regression(X, y)
+    significanceDict['Multivairate Regression'] = model_dict
 
     ### PCR
-    pcr_regression(X, y)
+    model_dict = pcr_regression(X, y)
+    significanceDict['PCR'] = model_dict
 
     ### Ridge
     alphas = np.logspace(-4, 1.5, 1000)
-    ridge_regression(X, y, alphas, cv=3)
+    model_dict = ridge_regression(X, y, alphas, cv=3)
+    significanceDict['Ridge'] = model_dict
 
     ### Lasso
     alphas = np.logspace(-4, 0, 1000)
-    lasso_regression(X, y, alphas, cv=3)
+    model_dict = lasso_regression(X, y, alphas, cv=3)
     lasso_path(X, y)
+    significanceDict['Lasso'] = model_dict
+
+    
+    ### Significance Testing
+
+    tests = significanceTester(significanceDict)
+    print(tests['p_values'])
+
 
 ###################################################################################################################
 if __name__ == '__main__':

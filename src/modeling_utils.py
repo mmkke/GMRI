@@ -157,6 +157,8 @@ def univariate_regression(X, y):
     plt.savefig('figs/univariate_r2_values', bbox_inches='tight')
     plt.show()
 
+    return createReturnDict(y_pred, X_test, y_test)
+
 ###################################################################################################################
 
 def multivariate_regression(X, y):
@@ -233,6 +235,8 @@ def multivariate_regression(X, y):
     plt.axhline(y=0, color='r', linestyle='-')
     plt.savefig('figs/mulit_reg_residuals', bbox_inches='tight')
     plt.show()
+    
+    return createReturnDict(y_pred, X_test, y_test)
 
 
 
@@ -343,6 +347,7 @@ def pcr_regression(X, y, cv=5):
     plt.title(r'PCR: Test and Train Explained Variance Ratio $(R^2)$')
     plt.savefig('figs/PCR_text_train', bbox_inches='tight')
     plt.show();
+    return createReturnDict(y_pred, X_test, y_test)
 
 ###################################################################################################################
 
@@ -447,6 +452,8 @@ def ridge_regression(X, y, alphas, cv=5):
     plt.savefig('figs/ridge_text_train', bbox_inches='tight')
     plt.show();
 
+    return createReturnDict(y_pred, X_test, y_test)
+
 ###################################################################################################################
 
 def lasso_regression(X, y, alphas, cv=5):
@@ -547,6 +554,8 @@ def lasso_regression(X, y, alphas, cv=5):
     plt.savefig('figs/lasso_text_train', bbox_inches='tight')
     plt.show();
 
+    return createReturnDict(y_pred, X_test, y_test)
+
 ###################################################################################################################
 def lasso_path(X, y):
     '''
@@ -626,6 +635,21 @@ def randomModel(X, y):
     #fit and predict with random model
     random_model.fit(y_train)
     y_pred = random_model.fit(X_test)
+
+
+    return createReturnDict(y_pred, X_test, y_test)
+
+
+def createReturnDict(y_pred, x_test, y_test):
+    '''
+    creates a return dictionary for significance testing
+    '''
+    returnDict = {}
+    returnDict['y_pred'] = y_pred
+    returnDict['x_test'] = x_test
+    returnDict['y_test'] = y_test
+
+    return returnDict
 
 
 ###################################################################################################################
