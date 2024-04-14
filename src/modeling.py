@@ -32,27 +32,45 @@ def main():
     model_dict = randomModel(X,y)
     significanceDict['random'] = model_dict
 
-    ### Statsmodel ANOVA
+    ### Statsmodel Summary
+    print('*'*100)
+    print('*'*100)
+    print('STATSMODEL SUMMARY')
     model_dict = get_regression_stats(X, y)
 
     ### Univariate regressions
+    print('*'*100)
+    print('*'*100)
+    print('UNIVARIATE REGRESSIONS')
     model_dict = univariate_regression(X, y)
     significanceDict['Univariate regression'] = model_dict
 
     ### Multivairate Regression
+    print('*'*100)
+    print('*'*100)
+    print('MULTIVARIATE REGRESSIONS')
     model_dict = multivariate_regression(X, y)
     significanceDict['Multivairate Regression'] = model_dict
 
     ### PCR
+    print('*'*100)
+    print('*'*100)
+    print('PRINCIPAL COMPONENT REGRESSION')
     model_dict = pcr_regression(X, y)
     significanceDict['PCR'] = model_dict
 
     ### Ridge
+    print('*'*100)
+    print('*'*100)
+    print('RIDGE REGRESSION')
     alphas = np.logspace(-4, 1.5, 1000)
     model_dict = ridge_regression(X, y, alphas, cv=3)
     significanceDict['Ridge'] = model_dict
 
     ### Lasso
+    print('*'*100)
+    print('*'*100)
+    print('LASSO REGRESSION')
     alphas = np.logspace(-4, 0, 1000)
     model_dict = lasso_regression(X, y, alphas, cv=3)
     lasso_path(X, y)
@@ -60,7 +78,9 @@ def main():
 
     
     ### Significance Testing
-
+    print('*'*100)
+    print('*'*100)
+    print('SIGNIFIGANCE TESTING')
     tests = significanceTester(significanceDict)
     print(tests['p_values'])
 

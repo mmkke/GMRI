@@ -102,19 +102,22 @@ def univariate_regression(X, y):
 
         score = model.score(X_test, y_test)
 
-        # Calculate and print coefficients
-        print("Model score:", score)
+        # metrics
+        print('*'*50)
+        print(f'Independet Varaible: {col.capitalize()}')
 
-        # Calculate and print the intercept and coef
-        print("Intercept:", model.intercept_)
-        print("Coefficient:", model.coef_)
-
-        # Calculate and print the mean squared error (MSE)
+        # get and print the mean squared error (MSE)
         mse = mean_squared_error(y_test, y_pred)
         print("Mean Squared Error:", mse)
 
         r2 = r2_score(y_test, y_pred)
         print("R-squared:", r2)
+
+        # print the intercept and coef
+        print("Intercept:", model.intercept_)
+        print("Coefficient:", model.coef_)
+
+
 
         fig, ax = plt.subplots(1, 2)
         # regression line
