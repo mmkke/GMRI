@@ -197,11 +197,14 @@ def merge_data(inflation=True):
 
 
     if inflation == True:
+
          # get inflation data
+        filepath = "data/BLS_CPI_inflationData_2004_2024.csv"
         inflation_df = pd.read_csv(filepath)
         
         #reaname columns to match fish data
         inflation_df.rename(columns={'year': 'YearNum', 'period':'MonthNum'}, inplace=True)
+        print(inflation_df.columns)
         
         #merge combined_df and inflation _df and adjust for inflation
         inflationMerged = pd.merge(combined_df, inflation_df, on=['YearNum', 'MonthNum'], how='left')

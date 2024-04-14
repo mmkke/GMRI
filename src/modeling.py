@@ -7,6 +7,7 @@ import numpy as np
 from eda_utils import *
 from modeling_utils import *
 from significanceTesting_utils import significanceTester
+from modeling_utils import randomModel
 
 ###################################################################################################################
 ## Functions
@@ -33,7 +34,6 @@ def main():
 
     ### Statsmodel ANOVA
     model_dict = get_regression_stats(X, y)
-    significanceDict['Statsmodel ANOVA'] = model_dict
 
     ### Univariate regressions
     model_dict = univariate_regression(X, y)

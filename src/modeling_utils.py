@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from src.Random_Model import Random_Model
+from Random_Model import Random_Model
 
 # preprocessing
 from sklearn.decomposition import PCA
@@ -634,7 +634,7 @@ def randomModel(X, y):
 
     #fit and predict with random model
     random_model.fit(y_train)
-    y_pred = random_model.fit(X_test)
+    y_pred = random_model.predict(X_test)
 
 
     return createReturnDict(y_pred, X_test, y_test)

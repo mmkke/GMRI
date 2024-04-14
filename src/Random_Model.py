@@ -6,8 +6,8 @@ class Random_Model:
         self.std = None
     
     def fit(self, y):
-        self.mean(np.mean(y))
-        self.std(np.std(y))
+        self.mean = np.mean(y)
+        self.std = np.std(y)
 
     def predict(self, X):
         if self.mean is None or self.std is None:
@@ -15,4 +15,4 @@ class Random_Model:
         
 
         samples = X.shape[0]
-        return np.random(self.mean, self.std, samples)
+        return np.random.normal(self.mean, self.std, samples).reshape(-1,1)
