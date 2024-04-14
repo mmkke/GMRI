@@ -14,11 +14,13 @@ def main():
 
     create_fishgroup_col()
 
-    df = merge_data()
+    getInflationData()
+
+    df = merge_data(inflation=True)
 
     print(df.info(10))
 
-    getInflationData()
+    
 
     
 

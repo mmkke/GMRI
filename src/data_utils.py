@@ -128,7 +128,7 @@ def create_fishgroup_col():
     groundfish_df.to_csv(filepath, index=False) 
     print(f'Processed data saved at: {filepath}')
 
-def merge_data():
+def merge_data(inflation=True):
     '''Merges data from NOAA and PFEX into a single dataframe.'''
 
     ## Load Data
@@ -194,6 +194,20 @@ def merge_data():
 
     # Concatenate the dataframes
     combined_df = pd.concat([local_df, imports_df], ignore_index=True)  
+
+
+    if inflation == True:
+         # get inflation data
+        filepath = "data/BLS_CPI_inflationData_2004_2024.csv"
+        inflation_df = pd.read_csv(filepath)
+        print(inflation_df.columns)
+        inflation_df.rename(columns={'year': 'YearNum', 'period':'MonthNum'}, inplace=True)
+        print(inflation_df.columns)
+        inflationMerged = pd.merge(combined_df, inflation_df, on=['YearNum', 'MonthNum'], how='left')
+        inflationMerged['AvgPrice_per_Kilo_raw'] =  inflationMerged['AvgPrice_per_Kilo']
+        inflationMerged['AvgPrice_per_Kilo'] = inflationMerged['AvgPrice_per_Kilo'] * inflationMerged['scale']
+        columns_to_keep = ['AmountSold_by_Kilo', 'AvgPrice_per_Kilo', 'AvgPrice_per_Kilo_raw', 'YearNum', 'MonthNum', 'FishGroup', 'Country']
+        combined_df = inflationMerged[columns_to_keep]
 
     filepath = "data/combined_data_2006-2024.csv"
     combined_df.to_csv(filepath, index=False) 
