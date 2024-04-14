@@ -45,11 +45,18 @@ def get_regression_stats(X, y):
     '''
 
     # run stastmodel
-    X_statsmodel = sm.add_constant(X.values) 
-    statsmodel = sm.OLS(y.values, X_statsmodel).fit()  
+    X_statsmodel = sm.add_constant(X) 
+    statsmodel = sm.OLS(y, X_statsmodel).fit()  
 
     # results
     print(statsmodel.summary())
+    # save as png
+    summary_text = statsmodel.summary().as_text()
+    plt.figure(figsize=(6, 4))
+    plt.text(0.1, 0.95, summary_text, va='top', family='monospace')
+    plt.axis('off')  # Turn off axes
+    plt.savefig('figs/statmodel_summary', bbox_inches='tight')
+    plt.show()
 
     # get residuals
     residuals = statsmodel.resid
@@ -183,6 +190,22 @@ def multivariate_regression(X, y):
     # get coef dataframe
     coef_df = pd.DataFrame(model.coef_.ravel(), X.columns, columns=['Coefficients'])
     print(coef_df)
+
+    # plot test and train score
+    # get scores
+    y_pred_train = model.predict(X_train)
+    train_score = r2_score(y_train, y_pred_train)
+    scores = [train_score, r2]
+    # plot
+    plt.bar(['Train', 'Test'], scores, color=['blue', 'orange'])
+    # annotate
+    for i, value in enumerate(scores):
+        plt.text(i, (value + 0.005), '{:.3f}'.format(value), ha='center') 
+    plt.ylabel('R-squared score')
+    plt.title('Train and Test Scores for Multivariate Regression')
+    plt.savefig('figs/multi_reg_result', bbox_inches='tight')
+    plt.show()
+
 
     # plot coef magnitudes
     coef_df['Abs_Coefficients'] = coef_df['Coefficients'].abs()

@@ -10,7 +10,6 @@ def main():
     getPortFishex()
     
     get_noaa_data()
-    
 
     create_fishgroup_col()
 
@@ -19,11 +18,6 @@ def main():
     df = merge_data(inflation=True)
 
     print(df.info(10))
-
-    
-
-    
-
 
 if __name__ == "__main__":
 
