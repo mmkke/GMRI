@@ -42,7 +42,7 @@ def main():
     print('*'*100)
     print('*'*100)
     print('UNIVARIATE REGRESSIONS')
- 
+    univariate_regression(X, y)
 
     ### Multivairate Regression
     print('*'*100)
@@ -55,7 +55,7 @@ def main():
     print('*'*100)
     print('*'*100)
     print('PRINCIPAL COMPONENT REGRESSION')
-    model_dict = pcr_regression(X, y)
+    model_dict = pcr_regression(X, y, cv=5)
     significanceDict['PCR'] = model_dict
 
     ### Ridge
@@ -63,7 +63,7 @@ def main():
     print('*'*100)
     print('RIDGE REGRESSION')
     alphas = np.logspace(-4, 1.5, 1000)
-    model_dict = ridge_regression(X, y, alphas, cv=3)
+    model_dict = ridge_regression(X, y, alphas, cv=5)
     significanceDict['Ridge'] = model_dict
 
     ### Lasso
@@ -71,7 +71,7 @@ def main():
     print('*'*100)
     print('LASSO REGRESSION')
     alphas = np.logspace(-4, 0, 1000)
-    model_dict = lasso_regression(X, y, alphas, cv=3)
+    model_dict = lasso_regression(X, y, alphas, cv=5)
     lasso_path(X, y)
     significanceDict['Lasso'] = model_dict
 

@@ -116,6 +116,31 @@ def main():
         plt.savefig('figs/amount_log_dist', bbox_inches='tight')
         plt.show()
 
+    ## monthly boxplots
+    # monthly data for amount
+    df_amount['month'] = df_amount.index.month
+
+    # Create a boxplot
+    sns.boxplot(x='month', y=df_amount.mean(axis=1), data=df_amount)
+    plt.xlabel('Month')
+    plt.ylabel('Amount (log kg)')
+    plt.title('Average Amount for all species by Month')
+    plt.savefig('figs/amount_boxplots', bbox_inches='tight')
+    plt.show()
+    df_amount.drop('month', axis=1, inplace=True)
+
+    # monthly data for value
+    df_value['month'] = df_value.index.month
+
+    # Create a boxplot
+    sns.boxplot(x='month', y=df_value.mean(axis=1), data=df_value)
+    plt.xlabel('Month')
+    plt.ylabel('Value (USD)')
+    plt.title('Average Value for all species by Month')
+    plt.savefig('figs/value_boxplots', bbox_inches='tight')
+    plt.show()
+    df_value.drop('month', axis=1, inplace=True)
+
     ### Join Dataframe
     df_combined = df_value.join(df_amount)
     print(df_combined.head(10))
@@ -165,6 +190,8 @@ def main():
     plt.show()
 
     ### Visualize Data
+
+
     # amount
     plt.plot(filtered_df_range.index.to_timestamp(), filtered_df_range.Cod_Domestic_USD, marker='o', label='Cod - Domestic')
     plt.plot(filtered_df_range.index.to_timestamp(), filtered_df_range.Cod_Imported_USD, marker='o', color='red', label='Cod - Imported')
@@ -209,14 +236,17 @@ def main():
     plt.show();
     
     ### Shuffle
-    shuffled_df = filtered_df_range.sample(frac=1, random_state=42)
+
+    shuffle = False
+    if shuffle:
+        filtered_df_range = filtered_df_range.sample(frac=1, random_state=42)
 
     ### Create Feature Matrix and Target Vector
 
-    cols = shuffled_df.columns
+    cols = filtered_df_range.columns
     X_cols = cols.drop('Pollock_Domestic_USD')
-    X = shuffled_df[X_cols]
-    y = shuffled_df[['Pollock_Domestic_USD']]
+    X = filtered_df_range[X_cols]
+    y = filtered_df_range[['Pollock_Domestic_USD']]
 
     ### Scaling
 

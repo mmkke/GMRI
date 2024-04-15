@@ -339,7 +339,7 @@ def pcr_regression(X, y, cv=5):
                 label='Max Test Score')
     # max test annot
     plt.text(x=9, y=results_df['mean_test_score'].max()+0.01, 
-             s=rf'Max $R^2$={r2:.3f}', c='red')
+             s=rf'Max $R^2$={results_df['mean_test_score'].max():.3f}', c='red')
     # max test marker
     plt.scatter(x= results_df['param_pca__n_components'][results_df['mean_test_score'].idxmax()], 
                 y=results_df['mean_test_score'].max(),
@@ -443,7 +443,7 @@ def ridge_regression(X, y, alphas, cv=5):
                 label='Max Test Score')
     # max test annot
     plt.text(x=5.5, y=results_df['mean_test_score'].max()+0.01, 
-             s=rf'Max $R^2$={r2:.3f}', c='red')
+             s=rf'Max $R^2$={results_df['mean_test_score'].max():.3f}', c='red')
     # max test marker
     plt.scatter(x= results_df['param_alpha'][results_df['mean_test_score'].idxmax()], 
                 y=results_df['mean_test_score'].max(),
@@ -545,7 +545,7 @@ def lasso_regression(X, y, alphas, cv=5):
                 label='Max Test Score')
     # max test annot
     plt.text(x=0.3, y=results_df['mean_test_score'].max()+0.01, 
-             s=rf'Max $R^2$={r2:.3f}', c='red')
+             s=rf'Max $R^2$={results_df['mean_test_score'].max():.3f}', c='red')
     # max test marker
     plt.scatter(x= results_df['param_alpha'][results_df['mean_test_score'].idxmax()], 
                 y=results_df['mean_test_score'].max(),
