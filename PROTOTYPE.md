@@ -316,6 +316,11 @@ ___
 
 <img src="figs/model_significance_testing_p_vals.png" width=800>
 
+Significance Testing was done using p_values of F-Tests of the models against each other and a 'random' model we made based on normal distribution of data. Results we failed to reject there was a significant difference between any model we constructed but they were all significantly better then
+an informed random guess.
+
+Would love some commentary on here on if and how we can improve? Finding a null hypothesis for predictions seems difficult?
+
 
 ___
 ## Conclusion
