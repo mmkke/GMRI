@@ -1,7 +1,7 @@
 ___
 ## Goal
 
-To determine if imports in groundfish from countries with fisheries in the Barent's Sea impact the the price of Dometically landed Pollock in Maine. This inquiry is guided by the premise that increasing limits on the Cod and Hadddock catches in the Barents Sea over the past 4 years had has a postiive impact on the market price of previously less desirable species like Pollock for Maine fisherman. Within the context of a complex global market, with impacts numerous trade and energy related variables at play, we would like to determine what, if any, role the Brent's Sea fishery plays in influencing market price for domestic pollock in Maine. 
+To determine if imports in groundfish from countries with fisheries in the Barent's Sea impact the the price of Dometically landed Pollock in Maine. This inquiry is guided by the premise that increasing limits on the Cod and Hadddock catches in the Barents Sea over the past 4 years had has a postiive impact on the market price of previously less desirable species like Pollock for Maine fisherman. Within the context of a complex global market, with impacts numerous trade and energy related variables at play, we would like to determine what, if any, role the Barent's Sea fishery plays in influencing market price for domestic pollock in Maine. 
 
 ___
 ## Approach
@@ -104,11 +104,11 @@ At this point the data included many NaN values that needed to be resolved befor
 
 <img src="figs/missingness1.png" width=800>
 
-Some of the less reelevant columns with a high number of NaN values where dropped completely. These included:
+Some of the less relevant columns with a high number of NaN values where dropped completely. These included:
 
 ['Hake_Imported_USD', 'Hake_Imported_Kilos', 'Redfish_Imported_USD', 'Redfish_Domestic_USD', 'Redfish_Domestic_Kilos', 'Redfish_Imported_Kilos']
 
-SInce out main focus of the inquiry was Haddock, COd and Pollock it did not seem necessary to keep these in the analysis with such a large percentage of NaN values.
+Since out main focus of the inquiry was Haddock, Cod and Pollock it did not seem necessary to keep these in the analysis with such a large percentage of NaN values.
 
 <img src="figs/missingness2.png" width=800>
 
@@ -178,11 +178,11 @@ Explained Variance Ratio (R^2):
 
 $R^2 = 1 - \frac{{\sum_{i=1}^n (y_i - \hat{y}_i)^2}}{{\sum_{i=1}^n (y_i - \bar{y})^2}} = \frac{\text{Explained Sum of Squares}}{\text{Total Sum of Squares}} = 0.518$  
 
-This summary is nonrobust to covarianc eand shows has returned a coeffcient value for all features, despite any underlying covariance. The Adjustred R - squared value indicates that some of our variables are not contributing to the overall score, since R-squared tends to increase with more features. 
+This summary demonstates that the Oridnary Least Square regression model explains about 52% of the total variance in the domestic Pollock value. The Adjustred R-squared value indicates that some of our variables are not contributing to the overall score, since R-squared tends to increase with more features. 
 
 F-statistic and Prob (F-statistic):
 
-THe F-statistic compares the regression model obtained to the null hypothesis where the coeffecients of all variables are 0. The probability of the F-statistic gives the probability that the null hypothesis is true, given the the F-statistic. In this case, it is quite low indicating that the regression model is likely producing a signifigant result and will be a useful approach to pursue. 
+THe F-statistic compares the regression model obtained to the null hypothesis (that domestic pollock prices are independent of the features) where the coeffecients of all variables are zero. The probability of the F-statistic gives the probability that the null hypothesis is true, given the the F-statistic. In this case, it is quite low indicating that the regression model is likely producing a signifigant result and will be a useful approach to pursue. 
 
 Coefficients:
 
@@ -244,7 +244,7 @@ Intercept: [4.92655315]
 
 ### PCR
 
-Since we have 13 features attempting some dimensionality reduction is another possible avenue for improving our regression analysis. In this analysis we perfmored a Principle COmponent Regression, using a gridsearch with cross-validation over the number of components.
+Since we have 13 features attempting some dimensionality reduction is another possible avenue for improving our regression analysis. In this analysis we perfmored a Principle Component Regression, using a gridsearch with cross-validation over the number of components.
 
 **Results:**
 ```Markdown
@@ -257,9 +257,13 @@ Best Parameters: {'pca__n_components': 11}
 
 <img src="figs/PCR_explained_variance.png" width=800>
 
+Performing a gridsearch over the value of n_components failed to produce a low dimensional embedding of the data that retains most of the variance. Based on this model, the variance if distributed across the feature space. 
+
 **Grid Search over n_components with 5 Fold Cross Validation**  
 
 <img src="figs/PCR_text_train.png" width=600>
+
+The gridsearch found the max mean cross validation score with 11 components. 
 
 
 ### Ridge
@@ -279,6 +283,9 @@ R-squared: 0.5472807974065743
 
 <img src="figs/ridge_text_train.png" width=600>
 
+The gridsearch found the max mean cross validation score with with a regularization parameter (alpha) of ~16.357. 
+
+
 
 ### Lasso
 
@@ -292,7 +299,7 @@ Mean Squared Error with best alpha: 0.9471284759470703
 R-squared: 0.5824270969636274
 ```
 
-THese reults are the same as the mutlivariate regression, suggesting that that is not a high enough degree of colineairty for LASSO to penalize any feature enough to reduce the coeficient to zero. 
+These reults are the same as the mutlivariate regression, suggesting that that is not a high enough degree of colineairty for LASSO to penalize any feature enough to reduce the coeficient to zero. 
 
 
 <img src="figs/lasso_coef.png" width=800>
@@ -301,8 +308,7 @@ THese reults are the same as the mutlivariate regression, suggesting that that i
 
 <img src="figs/lasso_text_train.png" width=600>
 
-<img src="figs/LARS_path.png" width=800>
-
+The gridsearch found the max mean cross validation score with with a regularization parameter (alpha) of ~0.0590. 
 
 
 ___
@@ -314,7 +320,7 @@ ___
 ___
 ## Conclusion
 
-
+TBD
 ___ 
 ## Acknowledgements
 
