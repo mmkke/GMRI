@@ -8,7 +8,9 @@ Date: 3/11/2024
 * Michael Massone (mmkke) - Team Lead
 
 
+## Note:
 
+This EDA was performed in advance of the project proposal (proposal.md) and is therefore quite braod in scope and not directed toward a specific project goal. More focused EDA was preformed following the propsoal as part of the modeling_prep.py, the results of which can be found in the README.md file.
 
 
 # Data Retrieval:
