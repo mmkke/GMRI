@@ -1,7 +1,8 @@
 ___
 ## Goal
 
-To determine if imports in groundfish from countries with fisheries in the Barents Sea impact the the price of Domestically landed Pollock in Maine. This inquiry is guided by the premise that increasing limits on the Cod and Haddock catches in the Barents Sea over the past 4 years had has a positive impact on the market price of previously less desirable species like Pollock for Maine fisherman. The goal of our project is to determine what role, if any, the Barents Sea fishery plays in influencing market price for domestic pollock in Maine. We set out to accomplish this task with the understanding that numerous trade and energy related variables are at play within the context of a complex global market.
+To determine if imports of groundfish from countries with fisheries in the Barents Sea impact the price of domestically landed Pollock in Maine. This inquiry is guided by the premise that recent restrictions, which decreased the catch limits for Cod and Haddock in the Barents Sea over the past four years, have had a positive impact on the market price of previously less desirable species like Pollock for Maine fishermen. The goal of our project is to determine what role, if any, the Barents Sea fishery plays in influencing market price for 
+Domestic Pollock in Maine. We set out to accomplish this task with the understanding that numerous trade and energy related variables are at play within the context of a complex global market.
 
 ___
 ## Approach
@@ -90,7 +91,7 @@ The value columns appeared close to normally distributed. However, the quantity 
 
 ### Set Time Frame
 
-We selected a timeframe of the 10 year period from 01/2014 to 01/2024. This time frame was selected to capture all available data after the collapse of the New England Groundfishery, which resulted in a major change in Import trends. Our focus was specifically on trade and price dynamics from countries fishing in the Barents Sea within the post-2013 paradigm.
+We selected a timeframe of the 10 year period from 01/2014 to 01/2024. This timeframe was chosen to encompass all available data following the 2012 declaration of the Northeast Multispecies Groundfish Fishery as a fishery disaster area, which led to significant changes in Import trends. Our focus was specifically on trade and price dynamics from countries fishing in the Barents Sea within the post-2013 paradigm.
 
 ```python
     ### Set Time Frame
@@ -101,7 +102,7 @@ We selected a timeframe of the 10 year period from 01/2014 to 01/2024. This time
 
 ### Drop NaN Values and Impute
 
-At this point the data included many NaN values that needed to be resolved before regression could be done. We used the Missingno library to visually assess this ratio and distribution of NaN values within the dataset.  
+At this point the data included many NaN values that needed to be resolved before regression could be performed. We used the Missingno library to visually assess the ratio and distribution of NaN values within the dataset.  
 
 <img src="figs/missingness1.png" width=800>
 
@@ -109,7 +110,7 @@ Some of the less relevant columns with a high number of NaN values where dropped
 
 ['Hake_Imported_USD', 'Hake_Imported_Kilos', 'Redfish_Imported_USD', 'Redfish_Domestic_USD', 'Redfish_Domestic_Kilos', 'Redfish_Imported_Kilos']
 
-Since out main focus of the inquiry was Haddock, Cod and Pollock it did not seem necessary to keep these in the analysis with such a large percentage of NaN values.
+Since the main focus of our inquiry was on Haddock, Cod and Pollock, it did not seem necessary to keep these in the analysis with such a large percentage of NaN values.
 
 <img src="figs/missingness2.png" width=800>
 
@@ -254,7 +255,7 @@ The explained variance ratio is somewhat improved over the intial statmdodel est
 
 ### PCR
 
-Since we have 13 features attempting some dimensionality reduction is another possible avenue for improving our regression analysis. In this analysis we perfmored a Principle Component Regression, using a gridsearch with cross-validation over the number of components.
+Since we have 13 features attempting some dimensionality reduction is another possible avenue for improving our regression analysis. In this analysis we performed a Principle Component Regression, using a gridsearch with cross-validation over the number of components.
 
 **Results:**
 ```Markdown
