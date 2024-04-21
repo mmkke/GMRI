@@ -30,8 +30,7 @@
 ___
 ## Goal
 
-To determine if imports of groundfish from countries with fisheries in the Barents Sea impact the price of domestically landed Pollock in Maine. This inquiry is guided by the premise that recent restrictions, which decreased the catch limits for Cod and Haddock in the Barents Sea over the past four years, have had a positive impact on the market price of previously less desirable species like Pollock for Maine fishermen. The goal of our project is to determine what role, if any, the Barents Sea fishery plays in influencing market price for 
-Domestic Pollock in Maine. We set out to accomplish this task with the understanding that numerous trade and energy related variables are at play within the context of a complex global market.
+To determine if imports of groundfish from countries with fisheries in the Barents Sea impact the price of domestically landed Pollock in Maine. This inquiry is guided by the premise that recent restrictions, which decreased the catch limits for Cod and Haddock in the Barents Sea over the past four years, have had a positive impact on the market price of previously less desirable species like Pollock for Maine fishermen. The goal of our project is to determine what role, if any, the Barents Sea fishery plays in influencing market price for Domestic Pollock in Maine. We set out to accomplish this task with the understanding that numerous trade and energy related variables are at play within the context of a complex global market.
 
 ___
 ## Approach
@@ -395,7 +394,9 @@ ___
 
 Our best model's returned an explained variance ratio of ~0.58. Due to the complexity of market factors impacting price of Pollock, this seems to be a reasonable result. It is clear that there are many features not included in our data set that are influencing price - as anticipated.  
 
-The price of 
+Based on the regression coeficients, Domestic Pollock Price is most strongly influenced by Domestic Pollock Amount. THis relationship makes intuitive sense, since the coeffcient is negative and we can assume that increased catches negatively impact market price. 
+
+In terms of influence of imports, the volume of Imported Haddock had relatively large negative coefficient with a significant (<0.01) p-value. This seems to indicate that there is a inverse relationship between these values and Domestic Pollock price, partially supporting our hypothesis that imported Haddock and Cod from the Barents Sea impact Pollock Prices. The volume of Imported Cod hwoever, did not seem to exhibit a significant effect. 
 
 ___
 ## Next Steps

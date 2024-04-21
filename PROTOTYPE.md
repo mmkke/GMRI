@@ -364,7 +364,9 @@ Would love some commentary on here on if and how we can improve? Finding a null 
 ___
 ## Results
 
-Our best model's returned an explained variance ratio of ~0.58. Due to the complexity of market factors impacting price of Pollock, this seems to be a reasonable result. It is clear that there are many features not included in our data set that are affecting price - as anticipated. However, of the 58% of the varaince that is explained, several features do stand out as having 
+Our best model's returned an explained variance ratio of ~0.58. Due to the complexity of market factors impacting price of Pollock, this seems to be a reasonable result. It is clear that there are many features not included in our data set that are influencing price - as anticipated.  
+
+The price of 
 
 ___
 ## Next Steps
