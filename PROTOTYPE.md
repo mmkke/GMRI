@@ -6,7 +6,7 @@ To determine if imports in groundfish from countries with fisheries in the Baren
 ___
 ## Approach
 
-Our approach is to perform a regression analysis on Domestic Pollock prices at the Portland Fish Exchange, incorporating the prices and quantities of various imported and domestic groundfish catches as inputs to the model. We make use of data provided by the Portland Fish Exchange and the NOAA Fisheries Database from January, 2014 to March, 2024. 
+Our approach is to perform a regression analysis on Domestic Pollock prices at the Portland Fish Exchange, incorporating the prices and quantities of various imported and domestic groundfish catches as inputs to the model. We use data provided by the Portland Fish Exchange and the NOAA Fisheries Database from 2014 to 2024. 
 
 ___
 ## Prep Data and Environment
@@ -77,20 +77,20 @@ The selected data was then formatted for regression analysis. Two pivot tables w
 
 ### Check Distribution of Features
 
-The feature columns where plotted as histograms to visually assess the distributions. 
+The feature columns were plotted as histograms to visually assess the distributions. 
 
 <img src="figs/value_dist.png" width=800>
 <img src="figs/amount_dist.png" width=800>
 
 ### Transform Value Features
 
-THe value columns appeared close to normally distributed. However, the quantity distributions appeared skewed so we implemented a log transformation to try to produce more normally distributed data. The results of that transformation can be seen below. 
+The value columns appeared close to normally distributed. However, the quantity distributions appeared skewed so we implemented a log transformation to try to produce more normally distributed data. The results of that transformation can be seen below. 
 
 <img src="figs/amount_log_dist.png" width=800>
 
 ### Set Time Frame
 
-We selected a timeframe of 10 year period from 01/2014 to 01/2024. This time frame was designed to capture all available data after the collapse of the New England Groundfishery resulted in a major change in import trends. Our focus was specifically on trade and price dynamics from countries fishing the Barents Sea within the post 2013 paradigm.
+We selected a timeframe of the 10 year period from 01/2014 to 01/2024. This time frame was selected to capture all available data after the collapse of the New England Groundfishery, which resulted in a major change in Import trends. Our focus was specifically on trade and price dynamics from countries fishing in the Barents Sea within the post-2013 paradigm.
 
 ```python
     ### Set Time Frame
