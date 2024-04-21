@@ -43,7 +43,7 @@ THe import information obtained from NOAA covered all imports from Europe. The c
 
 ### Create Pivot Tables
 
-The selected data was then formated for regression analysis. Two pivot tables where created, one for quantity and the other for value. Table rows are period indexes with the format MM/YYYY. The columns are the the fish species and origin. These two tables where then joined into a single dataframe. 
+The selected data was then formated for regression analysis. Two pivot tables where created, one for quantity and the other for value. Table rows are period indexes with the format MM/YYYY. The Portland Fish Exchange data reported monthly totals, and was therefore the limitng factor in-terms of time scale. The columns are the the fish species and origin (domestic vs imported). These two tables where then joined into a single dataframe for further preprocessing.
 
 ```python
     ### Create Pivot Tables
@@ -83,13 +83,13 @@ The feature columns where plotted as histograms to visually assess the distribut
 
 ### Transform Value Features
 
-Because the quantity data was skewed, we implemented a log transformation to try to produce more normally distributed data. The results of that transformation can be seen below. 
+THe value columns appeared close to normally distributed. However, the quantity distributions appeared skewed so we implemented a log transformation to try to produce more normally distributed data. The results of that transformation can be seen below. 
 
 <img src="figs/amount_log_dist.png" width=800>
 
 ### Set Time Frame
 
-We selected a timeframe of 10 year period from 01/2014 to 01/2024. 
+We selected a timeframe of 10 year period from 01/2014 to 01/2024. This time frame was designed to capture all available data after the collapse of the New England Groudfishery resulted in a major change in import trends. Our focus was specifically on trade and price dynamics from countries fishing the Barents Sea within the post 2013 paradigm.
 
 ```python
     ### Set Time Frame
@@ -100,7 +100,7 @@ We selected a timeframe of 10 year period from 01/2014 to 01/2024.
 
 ### Drop NaN Values and Impute
 
-At this point the data included many NaN values that needed to be resolved before regression could be done. 
+At this point the data included many NaN values that needed to be resolved before regression could be done. We used the Missingno library to visually assess this ratio and distribution of NaN values within the dataset.  
 
 <img src="figs/missingness1.png" width=800>
 
@@ -112,7 +112,7 @@ Since out main focus of the inquiry was Haddock, Cod and Pollock it did not seem
 
 <img src="figs/missingness2.png" width=800>
 
-The Imported Pollock data also included some NaN values, but these seemed more likely to have a strong bearing on our analysis. We visualized the distributions to insure a normal-like distrabution, then imputed the values using mean. 
+The Imported Pollock data also included NaN values, but these seemed more likely to have a strong bearing on our analysis. We visualized the distributions to insure a normal-like distrabution, then imputed the values using mean. 
 
 <img src="figs/dist_imputed_values.png" width=400><img src="" width=400>
 
@@ -120,15 +120,19 @@ Lastly we eliminated any remaining rows with NaN values.
 
 <img src="figs/missingness3.png" width=800>
 
-The final results was a Feature Matrix with 120 rows and 13 features. 
+The final results was a Feature Matrix with 120 rows and 13 features, with each row represents one month over the past 10 years. Price data objects represent the mean price per kg for that month, and quantity data objects are the total of landing of imported fish for that month.
 
 ### Visualize Data
 
 A quick visualization of the value and amount over time. 
 
-<img src="figs/data_viz_value.png" width=800>
+<img src="figs/data_viz_value.png" width=800>  
+
 
 <img src="figs/data_viz_amount.png" width=800>
+
+We can see an increase int he price of imported Cod and Haddock over the past two years with what appears to be the start of a downward trend in the volume of same. This could be indicators that our intial assumption that changes in Barents Sea fishing policy is impacting imports to Maine. The relation of these trends to Pollock prices is not clear from this visualization.
+ 
 
 Check for effects of seaonality with boxplots.
 
@@ -136,13 +140,15 @@ Check for effects of seaonality with boxplots.
 
 <img src="figs/value_boxplots.png" width=800>
 
+There is not clear impact of seaonality on price based on this plot. There may be some effect on volume, but the realtionship is not clear. 
+
 ### Correlations and Pairplots
 
 Checking for correlation amoung the features. 
 
 <img src="figs/heatmap.png" width=800>
 
-There do appear to be some minor correlations between some of the features. At this point we will not drop any features from the analysis, but we will need to look into ways of account for covariance in the regression analysis. 
+There do appear to be some minor correlations between some of the features. At this point we will not drop any features from the analysis, but we will need to look into ways of account for potential covariances in the regression analysis. 
 
 <img src="figs/pairplots.png" width=800>
 
@@ -182,7 +188,7 @@ This summary demonstates that the Oridnary Least Square regression model explain
 
 F-statistic and Prob (F-statistic):
 
-THe F-statistic compares the regression model obtained to the null hypothesis (that domestic pollock prices are independent of the features) where the coeffecients of all variables are zero. The probability of the F-statistic gives the probability that the null hypothesis is true, given the the F-statistic. In this case, it is quite low indicating that the regression model is likely producing a signifigant result and will be a useful approach to pursue. 
+The F-statistic compares the regression model obtained to the null hypothesis (that domestic pollock prices are independent of the features) where the coeffecients of all variables are zero. The probability of the F-statistic gives the probability that the null hypothesis is true, given the the F-statistic. In this case, it is quite low indicating that the regression model is likely producing a signifigant result and will be a useful approach to pursue. 
 
 Coefficients:
 
@@ -197,12 +203,14 @@ Haddock_Imported_Kilos    -0.5231      0.128     -4.099      0.000      -0.776  
 Hake_Domestic_Kilos        0.4379      0.142      3.091      0.003       0.157       0.719
 Pollock_Domestic_Kilos    -0.8893      0.178     -5.002      0.000      -1.242      -0.537
 ```
-Imported Cod and Haddock do seem to have a signifigant effect, as expected, on Pollock prices. There are also several domestic factors that seem to be influencing pollock price. Not suprisingly, the amount of domestic Pollock caught has a negative impact on price. Based on this analysis it seems that Pollock_Domestic_Kilos has the strongest effect, however we can use other regression methods to remove covariance and see if this is still true. 
+Imported Cod and Haddock prices do seem to have a signifigant effect, as predicted, on Pollock prices. There are also several domestic factors that seem to be influencing pollock price. Not suprisingly, the amount of domestic Pollock caught has a signifigant negative impact on price. Based on this analysis it seems that Pollock_Domestic_Kilos has the strongest impact on our dependent variable.
 
 
 The plot of the residuals below shows a distribution of residuals that appears random. Again this is a good indicator that a linear model is good fit for this dataset. 
 
 <img src="figs/statsmodel_residuals.png" width=800>
+
+Our next steps will be to further investigate the relationship between X and y an dtry to find a regression model with the best possible predictive power as measured by explained varaince. 
 
 ### Univariate Regression
 
@@ -218,7 +226,7 @@ We can select and look at the regression line and residual plot for all features
 <img src="figs/univariate_Hake_Domestic_USD.png" width=800>
 <img src="figs/univariate_Pollock_Domestic_Kilos.png" width=800>
 
-Visually there apear to be a high degree of dias in some cases. For example, the regression for HAddock_Imported_Kilos might be better represented with a polynmial regression. Since we are less concerned with individual relationships we will move on to try to improve the multivariate regression.   
+Visually there apear to be a high degree of bias in some cases. For example, the regression for Haddock_Imported_Kilos might be better represented with a polynmial regression. Since we are less concerned with individual relationships we will move on to try to improve the multivariate regression.   
 
 
 ### Multivariate Regression
@@ -234,6 +242,7 @@ Mean Squared Error: 0.9472081346425588
 Intercept: [4.92655315]
 ```
 
+The explained variance ratio is somewhat improved over the intial statmdodel estimate. Interestingly, this model perfomed better on the test data than on the trianing data. 
 
 <img src="figs/multi_reg_result.png" width=800>
 
@@ -299,7 +308,7 @@ Mean Squared Error with best alpha: 0.9471284759470703
 R-squared: 0.5824270969636274
 ```
 
-These reults are the same as the mutlivariate regression, suggesting that that is not a high enough degree of colineairty for LASSO to penalize any feature enough to reduce the coeficient to zero. 
+These reults are the same as the mutlivariate regression, suggesting that that is not a high enough degree of colinearity for LASSO to penalize any feature enough to reduce the coeficient to zero. 
 
 
 <img src="figs/lasso_coef.png" width=800>
@@ -325,7 +334,7 @@ Would love some commentary on here on if and how we can improve? Finding a null 
 ___
 ## Results
 
-TBD
+Our best model's returned an explained variance ratio of ~0.58. Due to the complexity of market factors impacting price of Pollock, this seems to be a reasonable result. It is clear that there are many features not included in our data set that are affecting price - as anticipated. However, of the 58% of the varaince that is explained, several features do stand out as having 
 
 ___
 ## Next Steps

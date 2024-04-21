@@ -200,7 +200,7 @@ def main():
     plt.plot(filtered_df_range.index.to_timestamp(), filtered_df_range.Pollock_Domestic_USD, marker='o', color='orange', label='Polllock - Domestic')
     plt.plot(filtered_df_range.index.to_timestamp(), filtered_df_range.Pollock_Imported_USD, marker='o', color='purple', label='Pollock - Imported')
     plt.legend()
-    plt.title('Amount Over Time, by species and import status')
+    plt.title('Avg Price Over Time, by species and import status')
     plt.xlabel('Time')
     plt.ylabel('Price (USD)')
     plt.savefig('figs/data_viz_amount', bbox_inches='tight')
@@ -214,9 +214,9 @@ def main():
     plt.plot(filtered_df_range.index.to_timestamp(), filtered_df_range.Pollock_Domestic_Kilos, marker='o', color='orange', label='Polllock - Domestic')
     plt.plot(filtered_df_range.index.to_timestamp(), filtered_df_range.Pollock_Imported_Kilos, marker='o', color='purple', label='Pollock - Imported')
     plt.legend()
-    plt.title('Avg Price Over Time, by species and import status')
+    plt.title('Total Volume Over Time, by species and import status')
     plt.xlabel('Time')
-    plt.ylabel('Amount in Kg (Log Transformed)')
+    plt.ylabel('Volume in Kg (Log Transformed)')
     plt.savefig('figs/data_viz_value', bbox_inches='tight')
     plt.show();
 
