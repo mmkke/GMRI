@@ -32,6 +32,9 @@ def main():
     model_dict = randomModel(X,y)
     significanceDict['random'] = model_dict
 
+    meanModel(X,y)
+    significanceDict['mean'] = model_dict
+
     ### Statsmodel Summary
     print('*'*100)
     print('*'*100)

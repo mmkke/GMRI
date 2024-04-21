@@ -1,5 +1,8 @@
 import numpy as np
 class Mean_Model:
+    '''
+    Model that just adds mean of Y for every prediction
+    '''
     def  __init__(self):
         self.mean = None
 

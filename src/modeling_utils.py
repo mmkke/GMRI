@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from Random_Model import Random_Model
+from Mean_Model import Mean_Model
 
 # preprocessing
 from sklearn.decomposition import PCA
@@ -642,6 +643,17 @@ def randomModel(X, y):
 
     return createReturnDict(y_pred, X_test, y_test)
 
+def meanModel(X,y):
+    # train/test split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    random_model = Random_Model()
+
+    mean_model =Mean_Model()
+
+    mean_model.fit(X_train,y_train)
+    y_pred = mean_model.predict(X_test)
+
+    return createReturnDict(y_pred, X_test, y_test)
 
 def createReturnDict(y_pred, x_test, y_test):
     '''
@@ -653,6 +665,7 @@ def createReturnDict(y_pred, x_test, y_test):
     returnDict['y_test'] = y_test
 
     return returnDict
+
 
 
 ###################################################################################################################
