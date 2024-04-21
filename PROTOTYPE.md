@@ -210,7 +210,7 @@ The plot of the residuals below shows a distribution of residuals that appears r
 
 <img src="figs/statsmodel_residuals.png" width=800>
 
-Our next steps will be to further investigate the relationship between X and y an dtry to find a regression model with the best possible predictive power as measured by explained varaince. 
+Our next steps will be to further investigate the relationship between X and y an dtry to find a regression model with the best possible predictive power as measured by explained varaince. To do so we will look at univariate, multivariate, and PCR regressions. Additonaly, we will try LASSO and Ridge Regresion model to better gernalize the model by regularizing the coeffecients.
 
 ### Univariate Regression
 
@@ -277,6 +277,21 @@ The gridsearch found the max mean cross validation score with 11 components.
 
 ### Ridge
 
+THe Ridge regression performs shrinkage by reducing the impact of low performing variables on the result. It does so by applying a penalty term $(\lambda)$. THe value of the penality is determined by the alpha, over which we will perform a gridsearch with cross validation, to find the best performing valu eof alpha. A valu eof 0 indicates no shrinkage of the coefficients. As the alpha increase so doe sthe amount of shrinkage or regularization. 
+
+Object Function for Ridge:
+
+$ \text{minimize} \left( \frac{1}{2n} \sum_{i=1}^{n} (y_i - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij})^2 + \lambda \sum_{j=1}^{p} \beta_j^2 \right) $
+
+where:
+
+- $(n)$ is the number of samples,
+- $(p)$ is the number of features,
+- $(y_i)$ is the target value for the $(i)$th sample,
+- $(x_{ij})$ is the value of the $(j)$th feature for the $(i)$th sample,
+- $(\beta_0, \beta_1, \ldots, \beta_p)$ are the coefficients,
+- $(\lambda)$ is the regularization parameter.
+
 
 **Results:**
 ```Markdown
@@ -292,13 +307,26 @@ R-squared: 0.5472807974065743
 
 <img src="figs/ridge_text_train.png" width=600>
 
-The gridsearch found the max mean cross validation score with with a regularization parameter (alpha) of ~16.357. 
+The gridsearch found the max mean cross validation score with with a regularization parameter (alpha) of ~16.357. Based on the non-zero alpha we can see that the regularization technique is having an impact. The explained variance of the model is not improved in terms of it's genralization to test data. 
 
 
 
 ### Lasso
 
 Since we have some features that are likely not contributing to the explained varaince, A LASSO regression might provide a better result as its regularization parameter can reduce these coefficients to zero. This should reduce the impact of covariance on the model. 
+
+Objective Function fo LASSO:
+
+$ \text{minimize} \left( \frac{1}{2n} \sum_{i=1}^{n} (y_i - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij})^2 + \lambda \sum_{j=1}^{p} |\beta_j| \right) $
+
+where:
+
+- $(n)$ is the number of samples,
+- $(p)$ is the number of features,
+- $(y_i)$ is the target value for the $(i)$th sample,
+- $(x_{ij})$ is the value of the $(j)$th feature for the $(i)$th sample,
+- $(\beta_0, \beta_1, \ldots, \beta_p)$ are the coefficients,
+- $(\lambda)$ is the regularization parameter.
 
 **Results:**
 ```Markdown

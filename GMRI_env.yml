@@ -13,3 +13,4 @@ dependencies:
   - jupyter
   - scikit-learn
   - statsmodels
+  - missingno
