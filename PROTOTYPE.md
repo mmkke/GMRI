@@ -36,7 +36,7 @@ Data is accessed using the get_data() and preprocess_data() functions for eda_ut
 
 ### Select Countries of Interest
 
-The data obtained from NOAA encompassed all imports from Europe. From this dataset, we selected countries with Barents Sea fisheries—namely Iceland, Norway, and Russia—along with Domestic landings in Portland, Maine from the Portland Fish Exchange.
+The data obtained from NOAA encompassed all imports from Europe. From this dataset, we selected countries with Barents Sea fisheries—namely Iceland, Norway, and Russia, and combined it with Domestic landings in Portland, Maine obtained from the Portland Fish Exchange.
 
 
 ```python
