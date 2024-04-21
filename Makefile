@@ -38,7 +38,7 @@ run_eda: $(SRC_DIR) $(FIGS_DIR) $(DATA_DIR) data/combined_data_2006-2024.csv
 	@echo "Complete."
 
 # retrievs data and preps for eda
-model_prep: check_data $(SRC_DIR) $(DATA_DIR) 
+model_prep: check_data $(SRC_DIR) $(DATA_DIR) get_data
 	@echo "Running file: src/modeling_prep.py"
 	python -B src/modeling_prep.py
 	@echo "Complete."
