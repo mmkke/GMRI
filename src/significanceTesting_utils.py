@@ -97,6 +97,7 @@ def significanceTester(modelDict):
     sns.heatmap(p_val_df, cmap="YlGnBu", annot=True,)
     plt.title("Model Significance Testing f_test P-Values Heatmap")
     plt.xticks(rotation=45)
+    plt.yticks(rotation=90)
     plt.xlabel("Test Model")
     plt.ylabel("Null Model")
     plt.savefig('figs/model_significance_testing_p_vals.png', bbox_inches='tight')
