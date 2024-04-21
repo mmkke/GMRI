@@ -1,28 +1,29 @@
 ___
 ## Goal
 
-To determine if imports in groundfish from countries with fisheries in the Barent's Sea impact the the price of Dometically landed Pollock in Maine. This inquiry is guided by the premise that increasing limits on the Cod and Hadddock catches in the Barents Sea over the past 4 years had has a postiive impact on the market price of previously less desirable species like Pollock for Maine fisherman. Within the context of a complex global market, with impacts numerous trade and energy related variables at play, we would like to determine what, if any, role the Barent's Sea fishery plays in influencing market price for domestic pollock in Maine. 
+To determine if imports in groundfish from countries with fisheries in the Barents Sea impact the the price of Domestically landed Pollock in Maine. This inquiry is guided by the premise that increasing limits on the Cod and Haddock catches in the Barents Sea over the past 4 years had has a positive impact on the market price of previously less desirable species like Pollock for Maine fisherman. The goal of our project is to determine what role, if any, the Barents Sea fishery plays in influencing market price for domestic pollock in Maine. We set out to accomplish this task with the understanding that numerous trade and energy related variables are at play within the context of a complex global market.
 
 ___
 ## Approach
 
-Our approach is to perfrom a regression analysis of the various groundfish imported and domestic catches, both quantity and price, on Domestic Pollock prices at the Portland Fish Exchange. Using Data from the Portland Fish Exchange and the NOAA's Fishery Database from 2014 till the present. 
+Our approach is to perform a regression analysis on Domestic Pollock prices at the Portland Fish Exchange, incorporating the prices and quantities of various imported and domestic groundfish catches as inputs to the model. We make use of data provided by the Portland Fish Exchange and the NOAA Fisheries Database from January, 2014 to March, 2024. 
 
 ___
-## Prep Data
+## Prep Data and Environment
 
-Run the following make command to run the src/modeling_prep.py file. This file will access the data and perform additional EDA and preprocessing regression analysis. Feature Matrix and Target Vector with be saved as CSVs. 
+Run the following make commands to setup the environment and run the src/modeling_prep.py file. This file will access the data and perform additional EDA and preprocessing regression analysis. The Feature Matrix and Target Vector will be saved as CSV files. 
 
 ```Make
-make model_prep
+make                # environment
+make model_prep     # setup, fetch data, modeling prep
 ```
 
 
 ### Format Data for Modeling
 
-Data was imported from the NOAA FIsheries Database and the Portland FIsh Exchangen (PFE) and combined into a single csv. ALthought he NOAA data was reported daily, the PFE is reported monthly, so NOAA data was summariezed as montlhy reports. After importing an basic preprocessing as seen in EDA, the price information was adjusted for inflation during EDA.
+Data was imported from the NOAA Fisheries Database and the Portland Fish Exchange (PFE) and combined into a single  CSV file. Althought the NOAA data was reported daily, PFE data is reported monthly. For this reason, NOAA data was summarized as monthly reports. After importing basic preprocessing steps as seen in the EDA, the price information was adjusted for inflation.
 
-Data is accessed using the get_data() and preprocess_data() functions for eda_util.py. Documentaion for these function is included in EDA.md.
+Data is accessed using the get_data() and preprocess_data() functions for eda_util.py. Documentation for these functions is included in EDA.md.
 
 ```python
     # get data
@@ -34,7 +35,7 @@ Data is accessed using the get_data() and preprocess_data() functions for eda_ut
 
 ### Select Countries of Interest
 
-THe import information obtained from NOAA covered all imports from Europe. The countries of interest, those that have Barent's Sea Fisheries, Iceland, Norway, and Russia where selected combined dataset. from the data along with USA data from the PFE.
+The data obtained from NOAA encompassed all imports from Europe. From this dataset, we selected countries with Barents Sea fisheries—namely Iceland, Norway, and Russia—along with Domestic landings in Portland, Maine from the Portland Fish Exchange.
 
 
 ```python
@@ -43,7 +44,7 @@ THe import information obtained from NOAA covered all imports from Europe. The c
 
 ### Create Pivot Tables
 
-The selected data was then formated for regression analysis. Two pivot tables where created, one for quantity and the other for value. Table rows are period indexes with the format MM/YYYY. The Portland Fish Exchange data reported monthly totals, and was therefore the limitng factor in-terms of time scale. The columns are the the fish species and origin (domestic vs imported). These two tables where then joined into a single dataframe for further preprocessing.
+The selected data was then formatted for regression analysis. Two pivot tables were created: one for quantity and the other for value, with table rows formatted as period indexes in the MM/YYYY format. The Portland Fish Exchange data, which reported monthly totals, served as the limiting factor in terms of the time scale. The columns in these tables represent the fish species and their origin (domestic versus imported). These two tables were subsequently merged into a single dataframe for further preprocessing.
 
 ```python
     ### Create Pivot Tables
@@ -89,7 +90,7 @@ THe value columns appeared close to normally distributed. However, the quantity 
 
 ### Set Time Frame
 
-We selected a timeframe of 10 year period from 01/2014 to 01/2024. This time frame was designed to capture all available data after the collapse of the New England Groudfishery resulted in a major change in import trends. Our focus was specifically on trade and price dynamics from countries fishing the Barents Sea within the post 2013 paradigm.
+We selected a timeframe of 10 year period from 01/2014 to 01/2024. This time frame was designed to capture all available data after the collapse of the New England Groundfishery resulted in a major change in import trends. Our focus was specifically on trade and price dynamics from countries fishing the Barents Sea within the post 2013 paradigm.
 
 ```python
     ### Set Time Frame
@@ -368,6 +369,4 @@ ___
 ## Next Steps
 ___ 
 ## Acknowledgements
-
-
 
