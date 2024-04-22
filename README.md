@@ -141,7 +141,7 @@ Since the main focus of our inquiry was on Haddock, Cod and Pollock, it seemed u
 
 The Imported Pollock data also included NaN values, but these seemed more likely to have a strong bearing on our analysis. We visualized the distributions to insure a normal-like distribution, then imputed the values using the mean of the respective data. 
 
-<img src="figs/dist_imputed_values.png" width=400><img src="" width=400>
+<img src="figs/dist_imputed_values.png" width=400>
 
 Lastly we eliminated any remaining rows with NaN values. 
 
