@@ -302,10 +302,10 @@ def pcr_regression(X, y, cv=5):
     })
     print('Explained Variance Ratios')
     print(explained_variance_df)
+    cumulative_variance_ratio = np.cumsum(explained_variance_ratio)
 
-    # Plot the explained variance ratio
-    plt.figure(figsize=(10, 6))
-    # plot
+
+    # combined plot
     plt.bar(range(1, len(explained_variance_ratio) + 1), 
             explained_variance_ratio, alpha=0.8)
     # annot
@@ -319,7 +319,31 @@ def pcr_regression(X, y, cv=5):
     plt.savefig('figs/PCR_explained_variance', bbox_inches='tight')
     plt.show()
 
-    cumulative_variance_ratio = np.cumsum(explained_variance_ratio)
+    fig, ax1 = plt.subplots(figsize=(10, 6))
+
+    # plot the explained variance ratio as bars on the first axis
+    ax1.bar(range(1, len(explained_variance_ratio) + 1), 
+            explained_variance_ratio, 
+            alpha=0.8)
+    for i, value in enumerate(explained_variance_ratio):
+        ax1.text(i+1, (abs(value) + 0.005), '{:.3f}'.format(value), ha='center')
+    ax1.set_xlabel('Principal Component')
+    ax1.set_ylabel('Explained Variance Ratio')
+    ax1.set_title('Explained Variance Ratio by Principal Component')
+    ax1.grid(axis='y', 
+             linestyle='--', 
+             alpha=0.6)
+    ax1.set_xticks(range(1, len(explained_variance_ratio) + 1))
+    # create a twin axis sharing the same x-axis
+    ax2 = ax1.twinx()
+    ax2.plot(range(1, len(cumulative_variance_ratio) + 1), 
+             cumulative_variance_ratio, 
+             marker='o', 
+             color='orange')
+    ax2.set_ylabel('Cumulative Explained Variance Ratio')
+    plt.savefig('figs/PCR_explained_variance_combined', bbox_inches='tight')
+    plt.show()
+
 
     # plot the cumulative explained variance
     plt.plot(range(1, len(cumulative_variance_ratio) + 1), cumulative_variance_ratio, marker='o')
