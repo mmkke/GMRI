@@ -389,7 +389,7 @@ Would love some commentary on here on if and how we can improve? Finding a null 
 ___
 ## Results
 
-Our best model's returned an explained variance ratio of ~0.58. Due to the complexity of market factors impacting price of Pollock, this seems to be a reasonable result. It is clear that there are many features not included in our data set that are influencing price - as anticipated.  
+Our best models returned an explained variance ratio of ~0.58. Due to the complexity of market factors impacting price of Pollock, this seems to be a reasonable result. It is clear that there are many features not included in our data set that are influencing price - as anticipated.  
 
 Based on the regression coefficients, Domestic Pollock Price is most strongly influenced by Domestic Pollock Amount. This relationship makes intuitive sense, since the coefficient is negative and we can assume that increased catches negatively impact market price. 
 
@@ -404,24 +404,20 @@ Next steps for the project may include seeking input from domain experts at GMRI
 ___ 
 ## Acknowledgements
 1) Stakeholder meeting with Dr. Kanae Tokunaga, Senior Scientist at GMRI, March 12, 2024.
-2) “Barents Sea cod quota drops by 20 percent for third straight year” (https://www.seafoodsource.com)
-3) “Tight cod supplies, better for pollock | GLOBEFISH | Food and Agriculture Organization of the United Nations”(https://fao.org/in-action/globefish/market-reports)
-4) “Groundfish: Supplies slightly down in 2023 | GLOBEFISH | Food and Agriculture Organization of the United Nations” (https://www.fao.org/in-action/globefish/market-reports)
 
+2) [Barents Sea cod quota drops by 20 percent for third straight year](https://www.seafoodsource.com/news/supply-trade/barents-sea-cod-quota-drops-by-20-percent-for-third-straight-year#:~:text=Norway)
 
-1) [Barents Sea cod quota drops by 20 percent for third straight year](https://www.seafoodsource.com/news/supply-trade/barents-sea-cod-quota-drops-by-20-percent-for-third-straight-year#:~:text=Norway)
+3) [Tight cod supplies, better for pollock | GLOBEFISH | Food and Agriculture Organization of the United Nations](https://fao.org/in-action/globefish/market-reports/resource-detail/en/c/1655476/)
 
-2) [Tight cod supplies, better for pollock | GLOBEFISH | Food and Agriculture Organization of the United Nations](https://fao.org/in-action/globefish/market-reports/resource-detail/en/c/1655476/)
+4) [Groundfish Forum predicts wild-caught whitefish supplies will remain flat in 2024](https://www.seafoodsource.com/news/supply-trade/groundfish-forum-predicts-wild-caught-whitefish-supplies-remain-flat-in-2024)
 
-3) [Groundfish Forum predicts wild-caught whitefish supplies will remain flat in 2024](https://www.seafoodsource.com/news/supply-trade/groundfish-forum-predicts-wild-caught-whitefish-supplies-remain-flat-in-2024)
+5) [Groundfish: Supplies slightly down in 2023 | GLOBEFISH | Food and Agriculture Organization of the United Nations](https://www.fao.org/in-action/globefish/market-reports/resource-detail/en/c/1634023/)
 
-4) [Groundfish: Supplies slightly down in 2023 | GLOBEFISH | Food and Agriculture Organization of the United Nations](https://www.fao.org/in-action/globefish/market-reports/resource-detail/en/c/1634023/)
+6) [Supplies may become tighter | GLOBEFISH | Food and Agriculture Organization of the United Nations](https://www.fao.org/in-action/globefish/market-reports/resource-detail/en/c/1460139/)
 
-5) [Supplies may become tighter | GLOBEFISH | Food and Agriculture Organization of the United Nations](https://www.fao.org/in-action/globefish/market-reports/resource-detail/en/c/1460139/)
+7) [An Introduction to Statistical Learning with Applications in Python](https://www.statlearning.com/resources-python)
 
-6) [An Introduction to Statistical Learning with Applications in Python](https://www.statlearning.com/resources-python)
-
-7) [Scikit Learn - Supervised Learning](https://scikit-learn.org/stable/supervised_learning.html)
+8) [Scikit Learn - Supervised Learning](https://scikit-learn.org/stable/supervised_learning.html)
     * [Ordinary Least Squares](https://scikit-learn.org/stable/modules/linear_model.html#ordinary-least-squares)
     * [Ridge Regression and classification](https://scikit-learn.org/stable/modules/linear_model.html#ridge-regression-and-classification)
     * [Lasso](https://scikit-learn.org/stable/modules/linear_model.html#lasso)
