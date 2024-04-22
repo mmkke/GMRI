@@ -304,8 +304,8 @@ def pcr_regression(X, y, cv=5):
     print(explained_variance_df)
     cumulative_variance_ratio = np.cumsum(explained_variance_ratio)
 
-
-    # combined plot
+    ## Plots
+    # bar plot
     plt.bar(range(1, len(explained_variance_ratio) + 1), 
             explained_variance_ratio, alpha=0.8)
     # annot
@@ -319,12 +319,13 @@ def pcr_regression(X, y, cv=5):
     plt.savefig('figs/PCR_explained_variance', bbox_inches='tight')
     plt.show()
 
+    # combined plot
     fig, ax1 = plt.subplots(figsize=(10, 6))
-
-    # plot the explained variance ratio as bars on the first axis
+    # bar
     ax1.bar(range(1, len(explained_variance_ratio) + 1), 
             explained_variance_ratio, 
             alpha=0.8)
+    # annot
     for i, value in enumerate(explained_variance_ratio):
         ax1.text(i+1, (abs(value) + 0.005), '{:.3f}'.format(value), ha='center')
     ax1.set_xlabel('Principal Component')
@@ -334,8 +335,9 @@ def pcr_regression(X, y, cv=5):
              linestyle='--', 
              alpha=0.6)
     ax1.set_xticks(range(1, len(explained_variance_ratio) + 1))
-    # create a twin axis sharing the same x-axis
+    # second axis
     ax2 = ax1.twinx()
+    # cumulative lineplot
     ax2.plot(range(1, len(cumulative_variance_ratio) + 1), 
              cumulative_variance_ratio, 
              marker='o', 
@@ -344,8 +346,7 @@ def pcr_regression(X, y, cv=5):
     plt.savefig('figs/PCR_explained_variance_combined', bbox_inches='tight')
     plt.show()
 
-
-    # plot the cumulative explained variance
+    # cumulative explained variance lineplot
     plt.plot(range(1, len(cumulative_variance_ratio) + 1), cumulative_variance_ratio, marker='o')
     plt.xlabel('Number of Components')
     plt.ylabel('Cumulative Explained Variance Ratio')
