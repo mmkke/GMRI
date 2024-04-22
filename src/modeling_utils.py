@@ -319,6 +319,17 @@ def pcr_regression(X, y, cv=5):
     plt.savefig('figs/PCR_explained_variance', bbox_inches='tight')
     plt.show()
 
+    cumulative_variance_ratio = np.cumsum(explained_variance_ratio)
+
+    # plot the cumulative explained variance
+    plt.plot(range(1, len(cumulative_variance_ratio) + 1), cumulative_variance_ratio, marker='o')
+    plt.xlabel('Number of Components')
+    plt.ylabel('Cumulative Explained Variance Ratio')
+    plt.title('Cumulative Explained Variance Ratio for PCR Components')
+    plt.grid(True)
+    plt.savefig('figs/PCR_explained_variance_lineplot', bbox_inches='tight')
+    plt.show()
+
     ## plot test train scores
     plt.figure(figsize=(6,6))
     # train score
