@@ -30,17 +30,17 @@
 ___
 ## Goal
 
-To determine if imports of groundfish from countries with fisheries in the Barents Sea impact the price of domestically landed Pollock in Maine. This inquiry is guided by the premise that recent restrictions, which decreased the catch limits for Cod and Haddock in the Barents Sea over the past four years, have had a positive impact on the market price of previously less desirable species like Pollock for Maine fishermen. The goal of our project is to determine what role, if any, the Barents Sea fishery plays in influencing market price for Domestic Pollock in Maine. We set out to accomplish this task with the understanding that numerous trade and energy related variables are at play within the context of a complex global market.
+To determine if imports of groundfish from countries with fisheries in the Barents Sea impact the price of domestically landed Pollock in Maine. This inquiry is guided by the premise that decreasing fish stocks and recent restrictions, which decreased the catch limits for Cod and Haddock in the Barents Sea starting in 2022, have had a positive impact on the market price of previously less desirable species like Pollock for Maine fishermen. The goal of our project is to determine what role, if any, the Barents Sea fishery plays in influencing market price for Domestic Pollock in Maine. We set out to accomplish this task with the understanding that numerous trade and energy related variables are at play within the context of a complex global market.
 
 ___
 ## Approach
 
-Our approach is to perform a regression analysis on Domestic Pollock prices at the Portland Fish Exchange, incorporating the prices and quantities of various imported and domestic groundfish catches as inputs to the model. We use data provided by the Portland Fish Exchange and the NOAA Fisheries Database from 2014 to 2024. 
+Our approach is to perform a regression analysis on Domestic Pollock prices at the Portland Fish Exchange, incorporating the prices and quantities of various imported and domestic groundfish catches as inputs to our models. We use data provided by the Portland Fish Exchange and the NOAA Fisheries Database from 2014 to 2024. 
 
 ___
 ## Prep Data and Environment
 
-Run the following make commands to setup the environment and run the src/modeling_prep.py file. This file will access the data and perform additional EDA and preprocessing regression analysis. The Feature Matrix and Target Vector will be saved as CSV files. 
+Run the following make commands to setup the environment and run the src/modeling_prep.py file. This file will access the data and perform additional EDA and preprocessing for regression analysis. The Feature Matrix and Target Vector will be saved as CSV files. 
 
 ```Make
 make                # environment
@@ -50,9 +50,9 @@ make model_prep     # setup, fetch data, modeling prep
 
 ### Format Data for Modeling
 
-Data was imported from the NOAA Fisheries Database and the Portland Fish Exchange (PFE) and combined into a single  CSV file. Althought the NOAA data was reported daily, PFE data is reported monthly. For this reason, NOAA data was summarized as monthly reports. After importing basic preprocessing steps as seen in the EDA, the price information was adjusted for inflation.
+Data was imported from the NOAA Fisheries Database and the Portland Fish Exchange (PFE) and combined into a single  CSV file. Althought NOAA data is reported daily, PFE data is reported monthly. For this reason, NOAA data was summarized as monthly reports. After importing basic preprocessing steps as showcased in the EDA, Price values were adjusted for inflation.
 
-Data is accessed using the get_data() and preprocess_data() functions for eda_util.py. Documentation for these functions is included in EDA.md.
+Data is accessed using the get_data() and preprocess_data() functions defined in eda_util.py. Documentation for these functions is included in EDA.md.
 
 ```python
     # get data
@@ -64,7 +64,7 @@ Data is accessed using the get_data() and preprocess_data() functions for eda_ut
 
 ### Select Countries of Interest
 
-The data obtained from NOAA encompassed all imports from Europe. From this dataset, we selected countries with Barents Sea fisheries—namely Iceland, Norway, and Russia, and combined it with Domestic landings in Portland, Maine obtained from the Portland Fish Exchange.
+The data obtained from NOAA encompassed all imports from the European region. We filtered this dataset to include only countries with active Barents Sea fishery quotas, focusing on Norway and Russia, which control the majority of the harvest in the area of interest, along with Iceland, which fishes in the northern Arctic waters. We then combined these imports with domestic landings recorded in Portland, Maine, obtained from the Portland Fish Exchange.
 
 
 ```python
