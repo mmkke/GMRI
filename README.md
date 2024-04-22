@@ -65,8 +65,8 @@ The data obtained from NOAA encompassed all imports from the European region. We
 
 
 ```python
- data_filtered = data[data['Country'].isin(['USA', 'ICELAND', 'NORWAY', 'RUSSIAN FEDERATION'])]
- ```
+data_filtered = data[data['Country'].isin(['USA', 'ICELAND', 'NORWAY', 'RUSSIAN FEDERATION'])]
+```
 
 ### Create Pivot Tables
 
@@ -103,20 +103,20 @@ df_amount = data_without_country.pivot_table(index='YYYY/MM',
 
 ### Check Distribution of Features
 
-The feature columns were plotted as histograms to visually assess the distributions. 
+The feature columns were plotted as histograms to visually assess the Price and Volume distributions. 
 
 <img src="figs/value_dist.png" width=800>
 <img src="figs/amount_dist.png" width=800>
 
-### Transform Value Features
+### Transform Volume Features
 
-The value columns appeared close to normally distributed. However, the quantity distributions appeared skewed so we implemented a log transformation to try to produce more normally distributed data. The results of that transformation can be seen below. 
+The Price columns appeared to be close to normally distributed. However, the quantity distributions appeared skewed so we implemented a log transformation to try to produce more normally distributed data. The results of that transformation can be seen below. 
 
 <img src="figs/amount_log_dist.png" width=800>
 
 ### Set Time Frame
 
-We selected a timeframe of the 10 year period from 01/2014 to 01/2024. This timeframe was chosen to encompass all available data following the 2012 declaration of the Northeast Multispecies Groundfish Fishery as a fishery disaster area, which led to significant changes in Import trends. Our focus was specifically on trade and price dynamics from countries fishing in the Barents Sea within the post-2013 paradigm.
+We selected a 10-year timeframe from 01/2014 to 01/2024. This timeframe was chosen to encompass all available data following the 2012 declaration of the Northeast Multispecies Groundfish Fishery as a fishery disaster area, which led to significant changes in Import trends. Our focus was specifically on trade and price dynamics from countries fishing in the Barents Sea within the post-2013 paradigm which was highlighted by our EDA.
 
 ```python
 ### Set Time Frame
@@ -131,15 +131,15 @@ At this point the data included many NaN values that needed to be resolved befor
 
 <img src="figs/missingness1.png" width=800>
 
-Some of the less relevant columns with a high number of NaN values where dropped completely. These included:
+Some of the less relevant columns with a high number of NaN values were dropped completely. These included:
 
 ['Hake_Imported_USD', 'Hake_Imported_Kilos', 'Redfish_Imported_USD', 'Redfish_Domestic_USD', 'Redfish_Domestic_Kilos', 'Redfish_Imported_Kilos']
 
-Since the main focus of our inquiry was on Haddock, Cod and Pollock, it did not seem necessary to keep these in the analysis with such a large percentage of NaN values.
+Since the main focus of our inquiry was on Haddock, Cod and Pollock, it seemed unnecessary to keep these features in the analysis with such a large percentage of NaN values.
 
 <img src="figs/missingness2.png" width=800>
 
-The Imported Pollock data also included NaN values, but these seemed more likely to have a strong bearing on our analysis. We visualized the distributions to insure a normal-like distrabution, then imputed the values using mean. 
+The Imported Pollock data also included NaN values, but these seemed more likely to have a strong bearing on our analysis. We visualized the distributions to insure a normal-like distribution, then imputed the values using the mean of the respective data. 
 
 <img src="figs/dist_imputed_values.png" width=400><img src="" width=400>
 
@@ -147,7 +147,7 @@ Lastly we eliminated any remaining rows with NaN values.
 
 <img src="figs/missingness3.png" width=800>
 
-The final results was a Feature Matrix with 120 rows and 13 features, with each row represents one month over the past 10 years. Price data objects represent the mean price per kg for that month, and quantity data objects are the total of landing of imported fish for that month.
+The final result was a Feature Matrix with 120 rows and 13 features, with each row representing one month over the 10 year period. Price data objects represent the mean price per kg for that month, and quantity data objects are the total landing of imported fish species for that month.
 
 ### Visualize Data
 
@@ -158,16 +158,16 @@ A quick visualization of the value and amount over time.
 
 <img src="figs/data_viz_amount.png" width=800>
 
-We can see an increase int he price of imported Cod and Haddock over the past two years with what appears to be the start of a downward trend in the volume of same. This could be indicators that our intial assumption that changes in Barents Sea fishing policy is impacting imports to Maine. The relation of these trends to Pollock prices is not clear from this visualization.
+We can see an increase in the price of imported Cod and Haddock over the past two years with what appears to be the start of a downward trend in the volume of the same species. This could be an indicator that our initial assumption that changes in Barents Sea fish stocks and recently decreased quotas are impacting imports to Maine. The relation of these trends to Pollock prices is not clear from this visualization.
  
 
-Check for effects of seaonality with boxplots.
+Check for effects of seasonality with boxplots.
 
 <img src="figs/amount_boxplots.png" width=800>
 
 <img src="figs/value_boxplots.png" width=800>
 
-There is not clear impact of seaonality on price based on this plot. There may be some effect on volume, but the realtionship is not clear. 
+There is not clear impact of seasonality on price based on this plot. There may be some effect on volume, but the realationship is not clear. 
 
 ### Correlations and Pairplots
 
@@ -175,14 +175,14 @@ Checking for correlation amoung the features.
 
 <img src="figs/heatmap.png" width=800>
 
-There do appear to be some minor correlations between some of the features. At this point we will not drop any features from the analysis, but we will need to look into ways of account for potential covariances in the regression analysis. 
+There do appear to be some minor correlations between some of the features. At this point we will not drop any features from the analysis, but we will need to look into ways of accounting for potential covariances in the regression analysis. 
 
 <img src="figs/pairplots.png" width=800>
 
 
 ### Scaling
 
-We utlilized scikit-learns Standard Scaler to normalize and mean center features prior to analysis. 
+We utlilized the Standard Scaler from scikit-learn to normalize and mean center features prior to analysis. 
 
 
 ### Export Feature Matrix and Target Vector		
@@ -193,7 +193,7 @@ The feature matrix and target vector were saved as CSVs.
 ___
 ## Modeling
 
-Run the following make command to run the src/modeling.py file. This file will run several regression analysis and return the results and plots. 
+Execute the following make command to run the src/modeling.py file. This file will run several regression analyses and return the results and plots. 
 
 ```Make
 make modeling
