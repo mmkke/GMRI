@@ -391,12 +391,21 @@ ___
 
 Our best model's returned an explained variance ratio of ~0.58. Due to the complexity of market factors impacting price of Pollock, this seems to be a reasonable result. It is clear that there are many features not included in our data set that are influencing price - as anticipated.  
 
-Based on the regression coefficients, Domestic Pollock Price is most strongly influenced by Domestic Pollock Amount. THis relationship makes intuitive sense, since the coefficient is negative and we can assume that increased catches negatively impact market price. 
+Based on the regression coefficients, Domestic Pollock Price is most strongly influenced by Domestic Pollock Amount. This relationship makes intuitive sense, since the coefficient is negative and we can assume that increased catches negatively impact market price. 
 
-In terms of influence of imports, the volume of Imported Haddock had relatively large negative coefficient with a significant (<0.01) p-value. This seems to indicate that there is a inverse relationship between these values and Domestic Pollock price, partially supporting our hypothesis that imported Haddock and Cod from the Barents Sea impact Pollock Prices. The volume of Imported Cod however, did not seem to exhibit a significant effect. 
+In terms of the influence of imports on Domestic Pollock Price, the volume of Imported Haddock had a relatively large negative coefficient with a significant (<0.01) p-value. This seems to indicate that there is an inverse relationship between these values and Domestic Pollock price, partially supporting our hypothesis that imported Haddock and Cod from the Barents Sea impact Pollock Prices in Maine. The volume of Imported Cod however, did not seem to exhibit a significant effect on the price of Domestic Pollock. 
 
 ___
 ## Next Steps
+Given the inherent complexity of price prediction and the limited nature of our data sample, we found it difficult to make any firm conclusions. Our work is limited by the observational nature of the data, limited data samples, and the complexity of the models employed. Unconsidered disruptors to the fishing industry, market forces and features not included in our approach likely have significant effects on Domestic Pollock Price.
+
+Next steps for the project may include seeking input from domain experts at GMRI; searching for more granular data or implementing additional modeling approaches not yet explored.
+
 ___ 
 ## Acknowledgements
+1) Stakeholder meeting with Dr. Kanae Tokunaga, Senior Scientist at GMRI, March 12, 2024.
+2) “Barents Sea cod quota drops by 20 percent for third straight year” (https://www.seafoodsource.com)
+3) “Tight cod supplies, better for pollock | GLOBEFISH | Food and Agriculture Organization of the United Nations”(https://fao.org/in-action/globefish/market-reports)
+4) “Groundfish: Supplies slightly down in 2023 | GLOBEFISH | Food and Agriculture Organization of the United Nations” (https://www.fao.org/in-action/globefish/market-reports)
+
 
