@@ -55,11 +55,8 @@ Data was imported from the NOAA Fisheries Database and the Portland Fish Exchang
 Data is accessed using the get_data() and preprocess_data() functions defined in eda_util.py. Documentation for these functions is included in EDA.md.
 
 ```python
-    # get data
-    data = get_data()
-
-    # preprocess data
-    data = preprocess_data(data)
+data = get_data()             
+data = preprocess_data(data)
 ```
 
 ### Select Countries of Interest
@@ -76,30 +73,30 @@ The data obtained from NOAA encompassed all imports from the European region. We
 The selected data was then formatted for regression analysis. Two pivot tables were created: one for quantity and the other for value, with table rows formatted as period indexes in the MM/YYYY format. The Portland Fish Exchange data, which reported monthly totals, served as the limiting factor in terms of the time scale. The columns in these tables represent the fish species and their origin (domestic versus imported). These two tables were subsequently merged into a single dataframe for further preprocessing.
 
 ```python
-    ### Create Pivot Tables
-    # drop the 'Country' column
-    data_without_country = data_filtered.drop('Country', axis=1)
+### Create Pivot Tables
+# drop the 'Country' column
+data_without_country = data_filtered.drop('Country', axis=1)
 
-    # create a unique identifier for each fish group by its import status
-    data_without_country['FishGroup_ImportStatusValue'] = np.where(data_without_country['Imported'] == 'Yes',
-                                                            data_without_country['FishGroup'] + "_Imported_USD",
-                                                            data_without_country['FishGroup'] + "_Domestic_USD")
+# create a unique identifier for each fish group by its import status
+data_without_country['FishGroup_ImportStatusValue'] = np.where(data_without_country['Imported'] == 'Yes',
+                                                        data_without_country['FishGroup'] + "_Imported_USD",
+                                                        data_without_country['FishGroup'] + "_Domestic_USD")
 
-    # create a unique identifier for each fish group by its import status
-    data_without_country['FishGroup_ImportStatusAmount'] = np.where(data_without_country['Imported'] == 'Yes',
-                                                            data_without_country['FishGroup'] + "_Imported_Kilos",
-                                                            data_without_country['FishGroup'] + "_Domestic_Kilos")
+# create a unique identifier for each fish group by its import status
+data_without_country['FishGroup_ImportStatusAmount'] = np.where(data_without_country['Imported'] == 'Yes',
+                                                        data_without_country['FishGroup'] + "_Imported_Kilos",
+                                                        data_without_country['FishGroup'] + "_Domestic_Kilos")
 
-    # pivot the table to have dates as rows and the unique fish group import statuses as columns, with average prices as values
-    df_value = data_without_country.pivot_table(index='YYYY/MM', 
-                                                columns='FishGroup_ImportStatusValue', 
-                                                values='AvgPrice_per_Kilo',
-                                                aggfunc='mean')
-    # pivot the table to have dates as rows and the unique fish group import statuses as columns, with average prices as values
-    df_amount = data_without_country.pivot_table(index='YYYY/MM', 
-                                                columns='FishGroup_ImportStatusAmount', 
-                                                values='AmountSold_by_Kilo',
-                                                aggfunc='sum')
+# pivot the table to have dates as rows and the unique fish group import statuses as columns, with average prices as values
+df_value = data_without_country.pivot_table(index='YYYY/MM', 
+                                            columns='FishGroup_ImportStatusValue', 
+                                            values='AvgPrice_per_Kilo',
+                                            aggfunc='mean')
+# pivot the table to have dates as rows and the unique fish group import statuses as columns, with average prices as values
+df_amount = data_without_country.pivot_table(index='YYYY/MM', 
+                                            columns='FishGroup_ImportStatusAmount', 
+                                            values='AmountSold_by_Kilo',
+                                            aggfunc='sum')
 ```
 
 
@@ -122,10 +119,10 @@ The value columns appeared close to normally distributed. However, the quantity 
 We selected a timeframe of the 10 year period from 01/2014 to 01/2024. This timeframe was chosen to encompass all available data following the 2012 declaration of the Northeast Multispecies Groundfish Fishery as a fishery disaster area, which led to significant changes in Import trends. Our focus was specifically on trade and price dynamics from countries fishing in the Barents Sea within the post-2013 paradigm.
 
 ```python
-    ### Set Time Frame
-    start_period = pd.Period('2014-01', freq='M')
-    end_period = pd.Period('2024-04', freq='M')
-    filtered_df_range = df_combined[(df_combined.index >= start_period) & (df_combined.index <= end_period)].copy()
+### Set Time Frame
+start_period = pd.Period('2014-01', freq='M')
+end_period = pd.Period('2024-04', freq='M')
+filtered_df_range = df_combined[(df_combined.index >= start_period) & (df_combined.index <= end_period)].copy()
 ```
 
 ### Drop NaN Values and Impute
