@@ -383,13 +383,13 @@ ___
 Significance Testing was done using p_values of F-Tests of the models against each other and a 'random' model we made based on normal distribution of data. Results we failed to reject there was a significant difference between any model we constructed but they were all significantly better then
 an informed random guess.
 
-Would love some commentary on here on if and how we can improve? Finding a null hypothesis for predictions seems difficult?
+However, none of the models were significantly different from a model that imputes the target vector mean onto the target. While our models were an improvement over the mean we can't say that our resi;ts are signicantly better then this simple model.
 
 
 ___
 ## Results
 
-Our best models returned an explained variance ratio of ~0.58. Due to the complexity of market factors impacting price of Pollock, this seems to be a reasonable result. It is clear that there are many features not included in our data set that are influencing price - as anticipated.  
+Our best models returned an explained variance ratio of ~0.58. Due to the complexity of market factors impacting price of Pollock, this seems to be a reasonable result. It is clear that there are many features not included in our data set that are influencing price - as anticipated. Basically, given that we couldn't find a significant imrovement over fitting based on the target vector mean we cannot make any definitive conclusions. However, we still believe that our results could have been a jumping off point for further research.
 
 Based on the regression coefficients, Domestic Pollock Price is most strongly influenced by Domestic Pollock Amount. This relationship makes intuitive sense, since the coefficient is negative and we can assume that increased catches negatively impact market price. 
 
