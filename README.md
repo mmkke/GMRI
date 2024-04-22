@@ -397,7 +397,7 @@ In terms of the influence of imports on Domestic Pollock Price, the volume of Im
 
 ___
 ## Next Steps
-Given the inherent complexity of price prediction and the limited nature of our data sample, we found it difficult to make any firm conclusions. Our work is limited by the observational nature of the data, limited data samples, and the complexity of the models employed. Unconsidered disruptors to the fishing industry, market forces and features not included in our approach likely have significant effects on Domestic Pollock Price.
+Given the inherent complexity of price prediction and the limited nature of our data sample, we found it difficult to make any firm conclusions. Our work is limited by the observational nature of the data, limited data samples, and the modeling techniques we employed. Unconsidered disruptors to the fishing industry, market forces and features not included in our approach likely have significant effects on Domestic Pollock Price.
 
 Next steps for the project may include seeking input from domain experts at GMRI; searching for more granular data or implementing additional modeling approaches not yet explored.
 
