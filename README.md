@@ -50,7 +50,7 @@ make model_prep     # setup, fetch data, modeling prep
 
 ### Format Data for Modeling
 
-Data was imported from the NOAA Fisheries Database and the Portland Fish Exchange (PFE) and combined into a single  CSV file. Althought NOAA data is reported daily, PFE data is reported monthly. For this reason, NOAA data was summarized as monthly reports. After importing basic preprocessing steps as showcased in the EDA, Price values were adjusted for inflation.
+Data was imported from the NOAA Fisheries Database and the Portland Fish Exchange (PFE) and combined into a single  CSV file. Although NOAA data is reported daily, PFE data is reported monthly. For this reason, NOAA data was summarized as monthly reports. After importing basic preprocessing steps as showcased in the EDA, Price values were adjusted for inflation.
 
 Data is accessed using the get_data() and preprocess_data() functions defined in eda_util.py. Documentation for these functions is included in EDA.md.
 
@@ -167,7 +167,7 @@ Check for effects of seasonality with boxplots.
 
 <img src="figs/value_boxplots.png" width=800>
 
-There is not clear impact of seasonality on price based on this plot. There may be some effect on volume, but the realationship is not clear. 
+There is not clear impact of seasonality on price based on this plot. There may be some effect on volume, but the relationship is not clear. 
 
 ### Correlations and Pairplots
 
@@ -182,7 +182,7 @@ There do appear to be some minor correlations between some of the features. At t
 
 ### Scaling
 
-We utlilized the Standard Scaler from scikit-learn to normalize and mean center features prior to analysis. 
+We utilized the Standard Scaler from scikit-learn to normalize and mean center features prior to analysis. 
 
 
 ### Export Feature Matrix and Target Vector		
@@ -211,11 +211,11 @@ Explained Variance Ratio (R^2):
 
 $R^2 = 1 - \frac{{\sum_{i=1}^n (y_i - \hat{y}_i)^2}}{{\sum_{i=1}^n (y_i - \bar{y})^2}} = \frac{\text{Explained Sum of Squares}}{\text{Total Sum of Squares}} = 0.518$  
 
-This summary demonstates that the Oridnary Least Square regression model explains about 52% of the total variance in the domestic Pollock value. The Adjustred R-squared value indicates that some of our variables are not contributing to the overall score, since R-squared tends to increase with more features. 
+This summary demonstrates that the Ordinary Least Square regression model explains about 52% of the total variance in the domestic Pollock Price. The Adjusted R-squared value indicates that some of our variables are not contributing to the overall score, since R-squared tends to increase with more features. 
 
 F-statistic and Prob (F-statistic):
 
-The F-statistic compares the regression model obtained to the null hypothesis (that domestic pollock prices are independent of the features) where the coeffecients of all variables are zero. The probability of the F-statistic gives the probability that the null hypothesis is true, given the the F-statistic. In this case, it is quite low indicating that the regression model is likely producing a signifigant result and will be a useful approach to pursue. 
+The F-statistic compares the regression model obtained to the null hypothesis (that Domestic Pollock Prices are independent of the features) where the coefficients of all variables are zero. The probability of the F-statistic gives the probability that the null hypothesis is true, given the the F-statistic. In this case, it is quite low indicating that the regression model is likely producing a significant result and will be a useful approach to pursue. 
 
 Coefficients:
 
@@ -230,14 +230,14 @@ Haddock_Imported_Kilos    -0.5231      0.128     -4.099      0.000      -0.776  
 Hake_Domestic_Kilos        0.4379      0.142      3.091      0.003       0.157       0.719
 Pollock_Domestic_Kilos    -0.8893      0.178     -5.002      0.000      -1.242      -0.537
 ```
-Imported Cod and Haddock prices do seem to have a signifigant effect, as predicted, on Pollock prices. There are also several domestic factors that seem to be influencing pollock price. Not suprisingly, the amount of domestic Pollock caught has a signifigant negative impact on price. Based on this analysis it seems that Pollock_Domestic_Kilos has the strongest impact on our dependent variable.
+Imported Cod and Haddock prices do seem to have a significant effect, as predicted, on Pollock prices. There are also several domestic factors that seem to be influencing pollock price. Not surprisingly, the amount of domestic Pollock caught has a significant negative impact on price. Based on this analysis it seems that Pollock_Domestic_Kilos has the strongest impact on our dependent variable.
 
 
 The plot of the residuals below shows a distribution of residuals that appears random. Again this is a good indicator that a linear model is good fit for this dataset. 
 
 <img src="figs/statsmodel_residuals.png" width=800>
 
-Our next steps will be to further investigate the relationship between X and y an dtry to find a regression model with the best possible predictive power as measured by explained varaince. To do so we will look at univariate, multivariate, and PCR regressions. Additonaly, we will try LASSO and Ridge Regresion model to better gernalize the model by regularizing the coeffecients.
+Our next steps will be to further investigate the relationship between X and y and try to find a regression model with the best possible predictive power as measured by explained variance. To do so we will look at univariate, multivariate, and PCR regressions. Additionally, we will try LASSO and Ridge Regression model to better generalize the model by regularizing the coefficients.
 
 ### Univariate Regression
 
@@ -245,7 +245,7 @@ Next step is to compute the univariate regression for all features in our datase
 
 <img src="figs/univariate_r2_values.png" width=800>
 
-We can select and look at the regression line and residual plot for all features that had a signifigant p-value:
+We can select and look at the regression line and residual plot for all features that had a significant p-value:
 
 <img src="figs/univariate_Cod_Imported_USD.png" width=800>
 <img src="figs/univariate_Haddock_Imported_Kilos.png" width=800> 
@@ -253,12 +253,12 @@ We can select and look at the regression line and residual plot for all features
 <img src="figs/univariate_Hake_Domestic_USD.png" width=800>
 <img src="figs/univariate_Pollock_Domestic_Kilos.png" width=800>
 
-Visually there apear to be a high degree of bias in some cases. For example, the regression for Haddock_Imported_Kilos might be better represented with a polynmial regression. Since we are less concerned with individual relationships we will move on to try to improve the multivariate regression.   
+Visually there appear to be a high degree of bias in some cases. For example, the regression for Haddock_Imported_Kilos might be better represented with a polynomial regression. Since we are less concerned with individual relationships we will move on to try to improve the multivariate regression.   
 
 
 ### Multivariate Regression
 
-Mutivariate Regression using scikit-learn with train test split. 
+Multivariate Regression using scikit-learn with train test split. 
 
 Results:
 
@@ -269,7 +269,7 @@ Mean Squared Error: 0.9472081346425588
 Intercept: [4.92655315]
 ```
 
-The explained variance ratio is somewhat improved over the intial statmdodel estimate. Interestingly, this model perfomed better on the test data than on the trianing data. 
+The explained variance ratio is somewhat improved over the initial Statmodel estimate. Interestingly, this model performed better on the test data than on the training data. 
 
 <img src="figs/multi_reg_result.png" width=800>
 
@@ -280,7 +280,7 @@ The explained variance ratio is somewhat improved over the intial statmdodel est
 
 ### PCR
 
-Since we have 13 features attempting some dimensionality reduction is another possible avenue for improving our regression analysis. In this analysis we performed a Principle Component Regression, using a gridsearch with cross-validation over the number of components.
+Since we have 13 features attempting some dimensionality reduction is another possible avenue for improving our regression analysis. In this analysis we performed a Principle Component Regression, using a Gridsearch with cross-validation over the number of components.
 
 **Results:**
 ```Markdown
@@ -293,18 +293,18 @@ Best Parameters: {'pca__n_components': 11}
 
 <img src="figs/PCR_explained_variance.png" width=800>
 
-Performing a gridsearch over the value of n_components failed to produce a low dimensional embedding of the data that retains most of the variance. Based on this model, the variance if distributed across the feature space. 
+Performing a Gridsearch over the value of n_components failed to produce a low dimensional embedding of the data that retains most of the variance. Based on this model, the variance if distributed across the feature space. 
 
 **Grid Search over n_components with 5 Fold Cross Validation**  
 
 <img src="figs/PCR_text_train.png" width=600>
 
-The gridsearch found the max mean cross validation score with 11 components. 
+The Gridsearch found the max mean cross validation score with 11 components. 
 
 
 ### Ridge
 
-THe Ridge regression performs shrinkage by reducing the impact of low performing variables on the result. It does so by applying a penalty term $(\lambda)$. THe value of the penality is determined by the alpha, over which we will perform a gridsearch with cross validation, to find the best performing valu eof alpha. A valu eof 0 indicates no shrinkage of the coefficients. As the alpha increase so doe sthe amount of shrinkage or regularization. 
+THe Ridge regression performs shrinkage by reducing the impact of low performing variables on the result. It does so by applying a penalty term $(\lambda)$. THe value of the penalty is determined by the alpha, over which we will perform a Gridsearch with cross validation, to find the best performing value of alpha. A value of 0 indicates no shrinkage of the coefficients. As the alpha increase so does the amount of shrinkage or regularization. 
 
 Object Function for Ridge:
 
@@ -334,13 +334,13 @@ R-squared: 0.5472807974065743
 
 <img src="figs/ridge_text_train.png" width=600>
 
-The gridsearch found the max mean cross validation score with with a regularization parameter (alpha) of ~16.357. Based on the non-zero alpha we can see that the regularization technique is having an impact. The explained variance of the model is not improved in terms of it's genralization to test data. 
+The Gridsearch found the max mean cross validation score with with a regularization parameter (alpha) of ~16.357. Based on the non-zero alpha we can see that the regularization technique is having an impact. The explained variance of the model is not improved in terms of it's generalization to test data. 
 
 
 
 ### Lasso
 
-Since we have some features that are likely not contributing to the explained varaince, A LASSO regression might provide a better result as its regularization parameter can reduce these coefficients to zero. This should reduce the impact of covariance on the model. 
+Since we have some features that are likely not contributing to the explained variance, A LASSO regression might provide a better result as its regularization parameter can reduce these coefficients to zero. This should reduce the impact of covariance on the model. 
 
 Objective Function fo LASSO:
 
@@ -363,7 +363,7 @@ Mean Squared Error with best alpha: 0.9471284759470703
 R-squared: 0.5824270969636274
 ```
 
-These reults are the same as the mutlivariate regression, suggesting that that is not a high enough degree of colinearity for LASSO to penalize any feature enough to reduce the coeficient to zero. 
+These results are the same as the multivariate regression, suggesting that that is not a high enough degree of co-linearity for LASSO to penalize any feature enough to reduce the coefficient to zero. 
 
 
 <img src="figs/lasso_coef.png" width=800>
@@ -372,11 +372,11 @@ These reults are the same as the mutlivariate regression, suggesting that that i
 
 <img src="figs/lasso_text_train.png" width=600>
 
-The gridsearch found the max mean cross validation score with with a regularization parameter (alpha) of ~0.0590. 
+The Gridsearch found the max mean cross validation score with with a regularization parameter (alpha) of ~0.0590. 
 
 
 ___
-## Signifigance Testing
+## Significance Testing
 
 <img src="figs/model_significance_testing_p_vals.png" width=800>
 
@@ -391,9 +391,9 @@ ___
 
 Our best model's returned an explained variance ratio of ~0.58. Due to the complexity of market factors impacting price of Pollock, this seems to be a reasonable result. It is clear that there are many features not included in our data set that are influencing price - as anticipated.  
 
-Based on the regression coeficients, Domestic Pollock Price is most strongly influenced by Domestic Pollock Amount. THis relationship makes intuitive sense, since the coeffcient is negative and we can assume that increased catches negatively impact market price. 
+Based on the regression coefficients, Domestic Pollock Price is most strongly influenced by Domestic Pollock Amount. THis relationship makes intuitive sense, since the coefficient is negative and we can assume that increased catches negatively impact market price. 
 
-In terms of influence of imports, the volume of Imported Haddock had relatively large negative coefficient with a significant (<0.01) p-value. This seems to indicate that there is a inverse relationship between these values and Domestic Pollock price, partially supporting our hypothesis that imported Haddock and Cod from the Barents Sea impact Pollock Prices. The volume of Imported Cod hwoever, did not seem to exhibit a significant effect. 
+In terms of influence of imports, the volume of Imported Haddock had relatively large negative coefficient with a significant (<0.01) p-value. This seems to indicate that there is a inverse relationship between these values and Domestic Pollock price, partially supporting our hypothesis that imported Haddock and Cod from the Barents Sea impact Pollock Prices. The volume of Imported Cod however, did not seem to exhibit a significant effect. 
 
 ___
 ## Next Steps
